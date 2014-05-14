@@ -63,8 +63,9 @@ public abstract class Vehicle {
 	 * @throws VehicleException if arrivalTime is <= 0 
 	 */
 	public Vehicle(String vehID,int arrivalTime) throws VehicleException  {
-		if (arrivalTime <= 0)
+		if (arrivalTime <= 0){
 			throw new VehicleException ("Arrival time is <= 0");
+		}
 		this.vehID = vehID;
 		this.arrivalTime = arrivalTime;
 	}
@@ -79,6 +80,15 @@ public abstract class Vehicle {
 	 *         or if intendedDuration is less than the minimum prescribed in asgnSimulators.Constants
 	 */
 	public void enterParkedState(int parkingTime, int intendedDuration) throws VehicleException {
+		if (isParked || isQueued){
+			throw new VehicleException ("Vehicle is already in a parked or queued state");
+		}
+		if (parkingTime < 0){
+			throw new VehicleException ("Parking Time < 0");
+		}
+		if (intendedDuration < Constants.MINIMUM_STAY){
+			throw new VehicleException ("IntendedDuration is less than the minimum");
+		}
 		isParked = true;
 		this.parkingTime = parkingTime;
 	}
@@ -184,6 +194,7 @@ public abstract class Vehicle {
 	 */
 	@Override
 	public String toString() {
+		return "";
 	}
 
 	/**
