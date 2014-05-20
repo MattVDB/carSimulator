@@ -41,6 +41,20 @@ import asgn2Vehicles.Vehicle;
 public class CarPark {
 
 	
+	private int maxCarSpaces;
+	private int maxSmallCarSpaces;
+	private int maxMotorCycleSpaces;
+	private int maxQueueSize;
+	private ArrayList<Vehicle> queue;
+	private ArrayList<Car> numCars;
+	private ArrayList<MotorCycle> numMotorCycles;
+	private ArrayList<Vehicle> numSmallCars;
+	private ArrayList<Vehicle> past;
+	private int count = 0;
+	private int numDissatisfied;
+	private int spaces;
+	private String status = "";
+	
 	/**
 	 * CarPark constructor sets the basic size parameters. 
 	 * Uses default parameters
@@ -59,6 +73,16 @@ public class CarPark {
 	 * @param maxQueueSize maximum number of vehicles allowed to queue
 	 */
 	public CarPark(int maxCarSpaces,int maxSmallCarSpaces, int maxMotorCycleSpaces, int maxQueueSize) {
+		maxCarSpaces = this.maxCarSpaces;
+		maxSmallCarSpaces = this.maxSmallCarSpaces;
+		maxMotorCycleSpaces = this.maxMotorCycleSpaces;
+		maxQueueSize = this.maxQueueSize;
+		
+		queue = new ArrayList<Vehicle>(maxQueueSize);
+		numCars = new ArrayList<Car>();
+		numMotorCycles = new ArrayList<MotorCycle>();
+		numSmallCars = new ArrayList<Vehicle>();
+		past = new ArrayList<Vehicle>();
 	}
 
 	/**
@@ -94,6 +118,16 @@ public class CarPark {
 	 * @return true if car park empty, false otherwise
 	 */
 	public boolean carParkEmpty() {
+		int cars = this.getNumCars();
+		int motorcycles = this.getNumMotorCycles();
+		int total = cars + motorcycles;
+		if (total == 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
 	}
 	
 	/**
@@ -101,6 +135,15 @@ public class CarPark {
 	 * @return true if car park full, false otherwise
 	 */
 	public boolean carParkFull() {
+		int totalVehicles = numCars.size() + numMotorCycles.size() + numSmallCars.size();
+		int totalSpaces = maxCarSpaces + maxMotorCycleSpaces + maxSmallCarSpaces;
+		if (totalVehicles >= totalSpaces){
+			return true;			
+		}
+		else 
+		{
+			return false;
+		}
 	}
 	
 	/**
@@ -112,6 +155,7 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state 
 	 */
 	public void enterQueue(Vehicle v) throws SimulationException, VehicleException {
+		
 	}
 	
 	
@@ -147,6 +191,7 @@ public class CarPark {
 	 * @return number of cars in car park, including small cars
 	 */
 	public int getNumCars() {
+		return numCars.size() + numSmallCars.size();
 	}
 	
 	/**
@@ -155,6 +200,7 @@ public class CarPark {
 	 * 			a small car space
 	 */
 	public int getNumMotorCycles() {
+		return numMotorCycles.size();
 	}
 	
 	/**
@@ -163,6 +209,13 @@ public class CarPark {
 	 * 		   not occupying a small car space. 
 	 */
 	public int getNumSmallCars() {
+		int smallCarCounter = 0;
+		for (Car smallCar : numCars) {
+			if(smallCar.isSmall()){
+				smallCarCounter ++;
+			}
+		}
+		return numSmallCars.size() + smallCarCounter;
 	}
 	
 	/**
@@ -180,7 +233,7 @@ public class CarPark {
 	public String getStatus(int time) {
 		String str = time +"::"
 		+ this.count + "::" 
-		+ "P:" + this.spaces.size() + "::"
+		//+ "P:" + this.spaces.size() + "::"
 		+ "C:" + this.numCars + "::S:" + this.numSmallCars 
 		+ "::M:" + this.numMotorCycles 
 		+ "::D:" + this.numDissatisfied 
@@ -220,6 +273,7 @@ public class CarPark {
 	 * @return number of vehicles in the queue
 	 */
 	public int numVehiclesInQueue() {
+		return queue.size();
 	}
 	
 	/**
@@ -233,6 +287,7 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state or timing constraints are violated
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
+		
 	}
 
 	/**
@@ -251,13 +306,20 @@ public class CarPark {
 	 * @return true if queue empty, false otherwise
 	 */
 	public boolean queueEmpty() {
-	}
+		return queue.isEmpty();
+		}
 
 	/**
 	 * Simple status showing whether queue is full
 	 * @return true if queue full, false otherwise
 	 */
 	public boolean queueFull() {
+		if(queue.size() >= maxQueueSize){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	
 	/**
@@ -267,6 +329,34 @@ public class CarPark {
 	 * @return true if space available for v, false otherwise 
 	 */
 	public boolean spacesAvailable(Vehicle v) {
+		if(v instanceof MotorCycle){
+			if(numMotorCycles.size() >= maxMotorCycleSpaces){
+				if(numSmallCars.size() >= maxSmallCarSpaces){
+					return false;
+				}
+				else{
+					return true;
+				}
+			}
+			else{
+				return true;
+			}
+		}
+		else if(v instanceof Car) {
+			if(numCars.size() >= maxCarSpaces){
+				if(((Car) v).isSmall()){
+					if(numSmallCars.size() >= maxSmallCarSpaces){
+						return false;
+					}
+					else{
+						return true;
+					}
+				}
+			}else{
+				return true;
+			}
+		}
+		return false;
 	}
 
 
