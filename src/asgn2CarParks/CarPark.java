@@ -103,6 +103,12 @@ public class CarPark {
 	 * @throws SimulationException if vehicle is currently queued or parked
 	 */
 	public void archiveNewVehicle(Vehicle v) throws SimulationException {
+		if(v.isParked() || v.isQueued()){
+			throw new SimulationException("Vehicle is currently queued or parked");
+		}
+		else{
+			past.add(v);
+		}
 	}
 	
 	/**
@@ -111,6 +117,13 @@ public class CarPark {
 	 * @throws VehicleException if one or more vehicles not in the correct state or if timing constraints are violated
 	 */
 	public void archiveQueueFailures(int time) throws VehicleException {
+		int maxTime = Constants.MAXIMUM_QUEUE_TIME;
+		for (Vehicle v : queue) {
+			int arrivalTime = v.getArrivalTime();
+			if ((arrivalTime + maxTime) > time) {
+				past.add(v);
+			}
+		}
 	}
 	
 	/**
@@ -155,7 +168,12 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state 
 	 */
 	public void enterQueue(Vehicle v) throws SimulationException, VehicleException {
-		
+		if(queue.size() < maxQueueSize){
+			v.enterQueuedState();
+		}
+		else{
+			throw new SimulationException("Queue is full");
+		}
 	}
 	
 	
@@ -287,7 +305,8 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state or timing constraints are violated
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
-		
+			v.enterParkedState(time, intendedDuration);
+		}
 	}
 
 	/**
@@ -299,6 +318,16 @@ public class CarPark {
 	 * @throws VehicleException if state is incorrect, or timing constraints are violated
 	 */
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
+		for (Vehicle v : queue) {
+			int arrivalTime = v.getArrivalTime();
+			int maxTime = Constants.MAXIMUM_QUEUE_TIME;
+			if ((arrivalTime + maxTime) > time) {
+					archiveQueueFailures(time);
+			}
+			if(spacesAvailable(v)){
+				
+			}
+		}
 	}
 
 	/**
@@ -365,6 +394,7 @@ public class CarPark {
 	 */
 	@Override
 	public String toString() {
+		return "";
 	}
 
 	/**

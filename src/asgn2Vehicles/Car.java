@@ -10,6 +10,7 @@
  */
 package asgn2Vehicles;
 
+import asgn2CarParks.CarPark;
 import asgn2Exceptions.VehicleException;
 
 /**
@@ -55,7 +56,7 @@ public class Car extends Vehicle {
 	 */
 	@Override
 	public String toString() {
-		return "CarPark [count: " + count 
+		return "CarPark [count: " + count
 				 + " numCars: " + numCars 
 				 + " numSmallCars: " + numSmallCars 
 				 + " numMotorCycles: " + numMotorCycles 
