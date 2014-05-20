@@ -35,6 +35,7 @@ public class Car extends Vehicle {
 	 * @throws VehicleException if arrivalTime is <= 0  
 	 */
 	public Car(String vehID, int arrivalTime, boolean small) throws VehicleException {
+		super(vehID, arrivalTime);
 		this.vehID = vehID;
 		this.arrivalTime = arrivalTime;
 		this.small = small;
@@ -54,5 +55,13 @@ public class Car extends Vehicle {
 	 */
 	@Override
 	public String toString() {
+		return "CarPark [count: " + count 
+				 + " numCars: " + numCars 
+				 + " numSmallCars: " + numSmallCars 
+				 + " numMotorCycles: " + numMotorCycles 
+				 + " queue: " + (queue.size()) 
+				 + " numDissatisfied: " + numDissatisfied 
+				 + " past: " + past.size() + "]"; 
+
 	}
 }
