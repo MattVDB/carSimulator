@@ -16,22 +16,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import asgn2Exceptions.VehicleException;
-import asgn2Vehicles.Car;
-
 /**
  * @author hogan
  *
  */
 public class CarTests {
 	
+	private Vehical car;
 	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		Car car = new Car("iamcar", 10, true);
+		
 	}
 
 	/**
@@ -39,7 +37,6 @@ public class CarTests {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		
 	}
 
 	/**
@@ -52,22 +49,18 @@ public class CarTests {
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#Car(java.lang.String, int, boolean)}.
-	 * @throws VehicleException 
 	 */
 	@Test
-	public void testCar() throws VehicleException{
-		Car car = new Car("ircar", 10, true);
-		assertEquals(car.getVehID(), "ircar");
+	public void testCar() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
 	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
-	 * @throws VehicleException 
 	 */
 	@Test
-	public void testIsSmall() throws VehicleException {
-		Car car = new Car("IisCar",10, true);
-		assertEquals(car.isSmall(), true);
+	public void testIsSmall() {
+		fail("Not yet implemented"); // TODO
 	}
 
 }

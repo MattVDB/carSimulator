@@ -69,7 +69,6 @@ public abstract class Vehicle {
 		this.vehID = vehID;
 		this.arrivalTime = arrivalTime;
 	}
-	
   
 	/**
 	 * Transition vehicle to parked state (mutator)
