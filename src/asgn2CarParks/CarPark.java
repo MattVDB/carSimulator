@@ -187,6 +187,12 @@ public class CarPark {
 	 * constraints are violated
 	 */
 	public void exitQueue(Vehicle v,int exitTime) throws SimulationException, VehicleException {
+		if(!v.isQueued())
+			throw new SimulationException("Vehicle not in queue");
+		if((!v.isQueued()) || (exitTime > Constants.CLOSING_TIME) || (exitTime < 0) )
+			throw new VehicleException("vehicle is in an incorrect state or timing constraints are violated");
+		queue.remove(v);
+		v.exitQueuedState(exitTime);
 	}
 	
 	/**
@@ -305,8 +311,23 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state or timing constraints are violated
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
-			v.enterParkedState(time, intendedDuration);
+		if(!spacesAvailable(v))
+			throw new SimulationException("No suitable spave avaliabvle for parking");
+		if(v.isParked() || v.wasParked() || ((time + intendedDuration) > Constants.CLOSING_TIME))
+			throw new VehicleException("vehicle not in the correct state or timing constraints are violated");
+		if(v instanceof MotorCycle){
+			if(numMotorCycles.size() >= maxMotorCycleSpaces){
+				numSmallCars.add(v);
+			}else{
+				numMotorCycles.add((MotorCycle)v);
+			}
 		}
+		if(((Car) v).isSmall()){
+			numSmallCars.add(v);
+		}else{
+			numCars.add((Car)v);
+		}
+		v.enterParkedState(time, intendedDuration);
 	}
 
 	/**
@@ -405,6 +426,7 @@ public class CarPark {
 	 * @throws VehicleException if vehicle creation violates constraints 
 	 */
 	public void tryProcessNewVehicles(int time,Simulator sim) throws VehicleException, SimulationException {
+		
 	}
 
 	/**

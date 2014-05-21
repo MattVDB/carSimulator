@@ -10,7 +10,6 @@
  */
 package asgn2Vehicles;
 
-import asgn2CarParks.CarPark;
 import asgn2Exceptions.VehicleException;
 
 /**
@@ -56,13 +55,10 @@ public class Car extends Vehicle {
 	 */
 	@Override
 	public String toString() {
-		return "CarPark [count: " + count
-				 + " numCars: " + numCars 
-				 + " numSmallCars: " + numSmallCars 
-				 + " numMotorCycles: " + numMotorCycles 
-				 + " queue: " + (queue.size()) 
-				 + " numDissatisfied: " + numDissatisfied 
-				 + " past: " + past.size() + "]"; 
+		return "CarPark vehicleId: " + vehID
+				 + " arrivalTime: " + arrivalTime 
+				 + " isSmall: " + isSmall() 
+				 + "]"; 
 
 	}
 }
