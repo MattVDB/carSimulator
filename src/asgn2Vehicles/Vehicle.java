@@ -100,6 +100,8 @@ public abstract class Vehicle {
 	 * @throws VehicleException if the vehicle is already in a queued or parked state
 	 */
 	public void enterQueuedState() throws VehicleException {
+		if(isQueued || isParked)
+			throw new VehicleException ("Vehicle is already in a queued or parked state");
 		isQueued = true;
 	}
 	
@@ -110,6 +112,13 @@ public abstract class Vehicle {
 	 * 		  state or if the revised departureTime < parkingTime
 	 */
 	public void exitParkedState(int departureTime) throws VehicleException {
+		if(!isParked)
+			throw new VehicleException ("Vehicle is not in a parked state");
+		if(isQueued)
+			throw new VehicleException ("Vehicle is in a queued state");
+		if(departureTime < parkingTime)
+			throw new VehicleException ("Revised departureTime < parkingTime");
+		
 		isParked = false;
 		wasParked = true;
 		this.departureTime = departureTime;
@@ -124,6 +133,13 @@ public abstract class Vehicle {
 	 *  exitTime is not later than arrivalTime for this vehicle
 	 */
 	public void exitQueuedState(int exitTime) throws VehicleException {
+		if(isParked)
+			throw new VehicleException ("Vehicle is in a parked state");
+		if(!isQueued)
+			throw new VehicleException ("Vehicle is not in a queued state");
+		if(exitTime < arrivalTime)
+			throw new VehicleException ("Exit time is earlier than arrival time");
+		
 		isQueued = false;
 		wasQueued = true;
 		this.exitTime = exitTime;
@@ -195,8 +211,34 @@ public abstract class Vehicle {
 	 */
 	@Override
 	public String toString() {
-		return "";
-	}
+		String queing;
+		String parking;
+		String satisfied;
+		if(!wasQueued){
+			queing = " Vehicle was not queued";
+		}else{
+			queing = " Exit Time: " + exitTime +
+					 " Queuing Time: " + (exitTime-arrivalTime);
+		}
+		
+		if(!wasParked){
+			parking =  " Vehical was not parked";
+		}else{
+			parking = " Entry to Car Park: " + parkingTime +
+					  " Exit from Car Park: " + departureTime +
+					  " Parking Time: " + (departureTime-parkingTime);
+		}
+		
+		if(isSatisfied){
+			satisfied = " Customer was satisfied";
+		}else{
+			satisfied = " Customer was not satisfied";
+		}
+		
+		return "Vehicle [vehID: " + vehID +
+				" Arrival Time: " + arrivalTime +
+				queing + parking + satisfied + "]";
+		}
 
 	/**
 	 * Boolean status indicating whether vehicle was ever parked

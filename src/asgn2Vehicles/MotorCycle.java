@@ -33,6 +33,9 @@ public class MotorCycle extends Vehicle {
 	 */
 	public MotorCycle(String vehID, int arrivalTime) throws VehicleException {
 		super(vehID, arrivalTime);
+		if(arrivalTime <= 0)
+			throw new VehicleException ("Arrival time is less or equal to 0");
+		
 		this.vehID = vehID;
 		this.arrivalTime = arrivalTime;
 	}
