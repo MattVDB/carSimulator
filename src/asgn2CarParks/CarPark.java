@@ -54,6 +54,7 @@ public class CarPark {
 	private int numDissatisfied;
 	private int spaces;
 	private String status = "";
+	public boolean userInput = false;
 	
 	/**
 	 * CarPark constructor sets the basic size parameters. 
@@ -73,10 +74,17 @@ public class CarPark {
 	 * @param maxQueueSize maximum number of vehicles allowed to queue
 	 */
 	public CarPark(int maxCarSpaces,int maxSmallCarSpaces, int maxMotorCycleSpaces, int maxQueueSize) {
-		maxCarSpaces = this.maxCarSpaces;
-		maxSmallCarSpaces = this.maxSmallCarSpaces;
-		maxMotorCycleSpaces = this.maxMotorCycleSpaces;
-		maxQueueSize = this.maxQueueSize;
+		if(userInput == false){
+			maxCarSpaces = this.maxCarSpaces;
+			maxSmallCarSpaces = this.maxSmallCarSpaces;
+			maxMotorCycleSpaces = this.maxMotorCycleSpaces;
+			maxQueueSize = this.maxQueueSize;
+		}else{
+			maxCarSpaces = Constants.maxCarSpaces;
+			maxSmallCarSpaces = Constants.maxSmallCarSpaces;
+			maxMotorCycleSpaces = Constants.maxMotorCycleSpaces;
+			maxQueueSize = Constants.maxQueueSize;
+		}
 		
 		queue = new ArrayList<Vehicle>(maxQueueSize);
 		numCars = new ArrayList<Car>();
@@ -129,9 +137,9 @@ public class CarPark {
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
 	 */
 	private void departVehicle(Vehicle v, int time) throws VehicleException, SimulationException{
-		if(!(v.isParked())){
-			throw new VehicleException("Vehicle is not in the correct state");
-		}
+//		if(!(v.isParked())){
+//			throw new VehicleException("Vehicle is not in the correct state");
+//		}
 		if(!(v.isParked())){
 			throw new SimulationException("Vehicle not in the car park");
 		}
@@ -437,7 +445,7 @@ public class CarPark {
 		if(v instanceof MotorCycle){
 			if(numMotorCycles.size() >= maxMotorCycleSpaces){
 				if(numSmallCars.size() >= maxSmallCarSpaces){
-					return false;
+					return true;
 				}
 				else{
 					return true;
@@ -451,7 +459,7 @@ public class CarPark {
 			if(numCars.size() >= maxCarSpaces){
 				if(((Car) v).isSmall()){
 					if(numSmallCars.size() >= maxSmallCarSpaces){
-						return false;
+						return true;
 					}
 					else{
 						return true;
@@ -461,7 +469,7 @@ public class CarPark {
 				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 
 
@@ -487,22 +495,49 @@ public class CarPark {
 	 * @throws VehicleException if vehicle creation violates constraints 
 	 */
 	public void tryProcessNewVehicles(int time,Simulator sim) throws VehicleException, SimulationException {
+		if(time > Constants.CLOSING_TIME || time < 0)
+			throw new VehicleException("Time violate constraints");
+		
 		if(sim.newCarTrial()){
 			if(sim.smallCarTrial()){
-				Car c = new Car("C"+ count, time, true);
-				if(spacesAvailable(c)){
-					c.enterParkedState(time, sim.setDuration());
-					numSmallCars.add(c);
-				}else{
-					throw new SimulationException("No space available");					
-				}
-				if()
+				Car sc = new Car("C"+ count, time, true);
+				count++;
+				processVehicle(time, sim, sc);
 			}else{
 				Car c = new Car("C" + count, time, false);
+				count++;
+				processVehicle(time, sim, c);
 			}
 		}
 		if(sim.motorCycleTrial()){
 			MotorCycle mc = new MotorCycle("MC" + count, time);
+			count++;
+			processVehicle(time, sim, mc);
+		}
+	}
+
+	private void processVehicle(int time, Simulator sim, Vehicle v)
+			throws VehicleException, SimulationException {
+		if(spacesAvailable(v)){
+			v.enterParkedState(time, sim.setDuration());
+			if(v instanceof Car){
+				if(((Car) v).isSmall()){
+					numSmallCars.add(v);
+				}
+				else{
+					numCars.add((Car)v);
+				}
+			}else{
+				numMotorCycles.add((MotorCycle)v);
+			}
+		}else{
+			if(!(queueFull())){
+				v.enterQueuedState();
+				queue.add(v);
+			}
+			else{
+				past.add(v);
+			}
 		}
 	}
 
@@ -515,7 +550,27 @@ public class CarPark {
 	 * @throws SimulationException if vehicle is not in car park
 	 */
 	public void unparkVehicle(Vehicle v,int departureTime) throws VehicleException, SimulationException {
-	
+		if(!v.isParked())
+			throw new VehicleException ("Vehicle is not parked");
+		if(v.isQueued())
+			throw new VehicleException ("Vehicle is in queue");
+		if(departureTime > Constants.CLOSING_TIME)
+			throw new VehicleException ("Violates timing constraints");
+		if(!v.isParked())
+			throw new SimulationException("Vehicle is not in car park");
+		
+		if(v.isParked()){
+			v.exitParkedState(departureTime);
+			if(v instanceof Car){
+				if(((Car) v).isSmall()){
+					numSmallCars.remove(v); 
+				}else{
+					numCars.remove(v);
+				}
+			}else{
+				numMotorCycles.remove(v);
+			}
+		}
 	}
 	
 	/**
