@@ -94,6 +94,49 @@ public class CarPark {
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
+		for (Vehicle v : numCars){
+			if(force){
+				departVehicle(v, time);
+			}
+			else if(v.getDepartureTime() >= time){
+				departVehicle(v, time);
+			}
+		}
+		for (Vehicle v : numMotorCycles){
+			if(force){
+				departVehicle(v, time);
+			}
+			else if(v.getDepartureTime() >= time){
+				departVehicle(v, time);
+			}
+		}
+		for (Vehicle v : numSmallCars){
+			if(force){
+				departVehicle(v, time);
+			}
+			else if(v.getDepartureTime() >= time){
+				departVehicle(v, time);
+			}
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param Vehicle V
+	 * @param time int holding time at which the vehicle leaves
+	 * @throws VehicleException if vehicle to be archived is not in the correct state
+	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
+	 */
+	private void departVehicle(Vehicle v, int time) throws VehicleException, SimulationException{
+		if(!(v.isParked())){
+			throw new VehicleException("Vehicle is not in the correct state");
+		}
+		if(!(v.isParked())){
+			throw new SimulationException("Vehicle not in the car park");
+		}
+		past.add(v);
+		v.exitParkedState(time);
 	}
 		
 	/**
@@ -119,8 +162,11 @@ public class CarPark {
 	public void archiveQueueFailures(int time) throws VehicleException {
 		int maxTime = Constants.MAXIMUM_QUEUE_TIME;
 		for (Vehicle v : queue) {
+			if(!(v.isQueued()) || ((v.getArrivalTime() + time) < maxTime)){
+				throw new VehicleException("Vehicle not in correct state or timing constraints violated");
+			}
 			int arrivalTime = v.getArrivalTime();
-			if ((arrivalTime + maxTime) > time) {
+			if ((arrivalTime + time) > maxTime) {
 				past.add(v);
 			}
 		}
@@ -168,6 +214,9 @@ public class CarPark {
 	 * @throws VehicleException if vehicle not in the correct state 
 	 */
 	public void enterQueue(Vehicle v) throws SimulationException, VehicleException {
+		if(v.isParked() || v.isQueued() || v.wasParked() || v.wasQueued()){
+			throw new VehicleException("Vehicle not in correct state");
+		}
 		if(queue.size() < maxQueueSize){
 			v.enterQueuedState();
 		}
@@ -340,13 +389,19 @@ public class CarPark {
 	 */
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
 		for (Vehicle v : queue) {
+			if(!(spacesAvailable(v))){
+				throw new SimulationException("No suitable spaces available");
+			}
+			if(!(v.isQueued())){
+				throw new VehicleException("Vehicle not in correct state");
+			}
 			int arrivalTime = v.getArrivalTime();
 			int maxTime = Constants.MAXIMUM_QUEUE_TIME;
 			if ((arrivalTime + maxTime) > time) {
 					archiveQueueFailures(time);
 			}
 			if(spacesAvailable(v)){
-				
+				v.exitQueuedState(time);
 			}
 		}
 	}
@@ -415,7 +470,13 @@ public class CarPark {
 	 */
 	@Override
 	public String toString() {
-		return "";
+		return "CarPark [count: " + count 
+				 + " numCars: " + numCars 
+				 + " numSmallCars: " + numSmallCars 
+				 + " numMotorCycles: " + numMotorCycles 
+				 + " queue: " + (queue.size()) 
+				 + " numDissatisfied: " + numDissatisfied 
+				 + " past: " + past.size() + "]"; 
 	}
 
 	/**
@@ -426,7 +487,23 @@ public class CarPark {
 	 * @throws VehicleException if vehicle creation violates constraints 
 	 */
 	public void tryProcessNewVehicles(int time,Simulator sim) throws VehicleException, SimulationException {
-		
+		if(sim.newCarTrial()){
+			if(sim.smallCarTrial()){
+				Car c = new Car("C"+ count, time, true);
+				if(spacesAvailable(c)){
+					c.enterParkedState(time, sim.setDuration());
+					numSmallCars.add(c);
+				}else{
+					throw new SimulationException("No space available");					
+				}
+				if()
+			}else{
+				Car c = new Car("C" + count, time, false);
+			}
+		}
+		if(sim.motorCycleTrial()){
+			MotorCycle mc = new MotorCycle("MC" + count, time);
+		}
 	}
 
 	/**
@@ -438,6 +515,7 @@ public class CarPark {
 	 * @throws SimulationException if vehicle is not in car park
 	 */
 	public void unparkVehicle(Vehicle v,int departureTime) throws VehicleException, SimulationException {
+	
 	}
 	
 	/**
