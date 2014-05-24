@@ -95,44 +95,44 @@ public class SimulationRunner {
 		}
 		
 		//TODO: Implement Argument Processing 
-		cp.userInput = true;
-		
-		System.out.println("Enter Max Car Spaces : ");
-		String maxCar;		
-	    Scanner scanIn = new Scanner(System.in);
-	    maxCar = scanIn.nextLine();	          
-	    System.out.println(maxCar);
-	    Constants.maxCarSpaces = Integer.parseInt(maxCar);
-	    
-	    System.out.println("Enter Max Small Car Spaces : ");
-		String maxSmallCar;		
-	    Scanner scanIn1 = new Scanner(System.in);
-	    maxSmallCar = scanIn1.nextLine();	           
-	    System.out.println(maxSmallCar);
-	    Constants.maxSmallCarSpaces = Integer.parseInt(maxSmallCar);
-	    
-	    System.out.println("Enter Max MotorCycle Spaces : ");
-		String maxMCS;		
-	    Scanner scanIn2 = new Scanner(System.in);
-	    maxMCS = scanIn2.nextLine();	         
-	    System.out.println(maxMCS);
-	    Constants.maxMotorCycleSpaces = Integer.parseInt(maxMCS);
-	    
-	    System.out.println("Enter Max Max Queue Size : ");
-		String maxQueue;		
-	    Scanner scanIn3= new Scanner(System.in);
-	    maxQueue = scanIn3.nextLine();	            
-	    System.out.println(maxQueue);
-	    Constants.maxQueueSize = Integer.parseInt(maxQueue);
-	    
-	    scanIn.close();
-	    scanIn1.close();
-	    scanIn2.close();
-	    scanIn3.close();
-	    
-	    if(Constants.maxCarSpaces == 0 || Constants.maxSmallCarSpaces == 0 || Constants.maxMotorCycleSpaces == 0 || Constants.maxQueueSize == 0){
-	    	cp.userInput = false;
-	    }
+//		cp.userInput = true;
+//		
+//		System.out.println("Enter Max Car Spaces : ");
+//		String maxCar;		
+//	    Scanner scanIn = new Scanner(System.in);
+//	    maxCar = scanIn.nextLine();	          
+//	    System.out.println(maxCar);
+//	    Constants.maxCarSpaces = Integer.parseInt(maxCar);
+//	    
+//	    System.out.println("Enter Max Small Car Spaces : ");
+//		String maxSmallCar;		
+//	    Scanner scanIn1 = new Scanner(System.in);
+//	    maxSmallCar = scanIn1.nextLine();	           
+//	    System.out.println(maxSmallCar);
+//	    Constants.maxSmallCarSpaces = Integer.parseInt(maxSmallCar);
+//	    
+//	    System.out.println("Enter Max MotorCycle Spaces : ");
+//		String maxMCS;		
+//	    Scanner scanIn2 = new Scanner(System.in);
+//	    maxMCS = scanIn2.nextLine();	         
+//	    System.out.println(maxMCS);
+//	    Constants.maxMotorCycleSpaces = Integer.parseInt(maxMCS);
+//	    
+//	    System.out.println("Enter Max Max Queue Size : ");
+//		String maxQueue;		
+//	    Scanner scanIn3= new Scanner(System.in);
+//	    maxQueue = scanIn3.nextLine();	            
+//	    System.out.println(maxQueue);
+//	    Constants.maxQueueSize = Integer.parseInt(maxQueue);
+//	    
+//	    scanIn.close();
+//	    scanIn1.close();
+//	    scanIn2.close();
+//	    scanIn3.close();
+//	    
+//	    if(Constants.maxCarSpaces == 0 || Constants.maxSmallCarSpaces == 0 || Constants.maxMotorCycleSpaces == 0 || Constants.maxQueueSize == 0){
+//	    	cp.userInput = false;
+//	    }
 	    
 	    
 		

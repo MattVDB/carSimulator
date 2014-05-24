@@ -92,6 +92,7 @@ public abstract class Vehicle {
 		}
 		isParked = true;
 		this.parkingTime = parkingTime;
+		this.departureTime = parkingTime + intendedDuration;
 	}
 	
 	/**
@@ -116,8 +117,8 @@ public abstract class Vehicle {
 			throw new VehicleException ("Vehicle is not in a parked state");
 		if(isQueued)
 			throw new VehicleException ("Vehicle is in a queued state");
-//		if(departureTime < parkingTime)
-//			throw new VehicleException ("Revised departureTime < parkingTime");
+		if(departureTime < parkingTime)
+			throw new VehicleException ("Revised departureTime < parkingTime");
 		
 		isParked = false;
 		wasParked = true;

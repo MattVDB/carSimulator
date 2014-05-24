@@ -57,7 +57,7 @@ public class Car extends Vehicle {
 	 */
 	@Override
 	public String toString() {
-		return "CarPark vehicleId: " + vehID
+		return "Car[ vehicleId: " + vehID
 				 + " arrivalTime: " + arrivalTime 
 				 + " isSmall: " + isSmall() 
 				 + "]"; 
