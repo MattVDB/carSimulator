@@ -23,8 +23,6 @@ import asgn2Exceptions.VehicleException;
 public class Car extends Vehicle {
 	
 	private boolean small;
-	private String vehID;
-	private int arrivalTime;
 
 	/**
 	 * The Car Constructor - small set at creation, not mutable. 
@@ -38,8 +36,6 @@ public class Car extends Vehicle {
 		super(vehID, arrivalTime);
 		if(arrivalTime <= 0)
 			throw new VehicleException ("Arrival time is less or equal to 0");
-		this.vehID = vehID;
-		this.arrivalTime = arrivalTime;
 		this.small = small;
 	}
 
@@ -57,10 +53,15 @@ public class Car extends Vehicle {
 	 */
 	@Override
 	public String toString() {
-		return "Car[ vehicleId: " + vehID
-				 + " arrivalTime: " + arrivalTime 
-				 + " isSmall: " + isSmall() 
-				 + "]"; 
+		
+		String str;
+		if(isSmall()){
+			str = "\nCar can use small car parking space";
+		}else{
+			str = "\nCar cannot use small parking space";
+		}
+		
+		return super.toString() + str;
 
 	}
 }

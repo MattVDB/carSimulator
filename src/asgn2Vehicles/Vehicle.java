@@ -50,7 +50,6 @@ public abstract class Vehicle {
 	private int parkingTime;
 	private boolean isParked;
 	private boolean isQueued;
-	private boolean isSatisfied;
 	private boolean wasParked;
 	private boolean wasQueued;
 	private int exitTime;
@@ -138,8 +137,8 @@ public abstract class Vehicle {
 			throw new VehicleException ("Vehicle is in a parked state");
 		if(!isQueued)
 			throw new VehicleException ("Vehicle is not in a queued state");
-		if(exitTime < arrivalTime)
-			throw new VehicleException ("Exit time is earlier than arrival time");
+		if(exitTime <= arrivalTime)
+			throw new VehicleException ("Exit time is not later than arrival time");
 		
 		isQueued = false;
 		wasQueued = true;
@@ -204,7 +203,10 @@ public abstract class Vehicle {
 	 * @return true if satisfied, false if never in parked state or if queuing time exceeds max allowable 
 	 */
 	public boolean isSatisfied() {
-		return isSatisfied;
+		if(wasParked || isParked){
+			return true;
+		}
+		return false;
 	}
 	
 	/* (non-Javadoc)
@@ -215,30 +217,37 @@ public abstract class Vehicle {
 		String queing;
 		String parking;
 		String satisfied;
+		String exceeded;
 		if(!wasQueued){
-			queing = " Vehicle was not queued";
+			queing = "\nVehicle was not queued";
 		}else{
-			queing = " Exit Time: " + exitTime +
-					 " Queuing Time: " + (exitTime-arrivalTime);
+			queing = "\nExit from Queue: " + exitTime +
+					 "\nQueuing Time: " + (exitTime-arrivalTime);
 		}
 		
 		if(!wasParked){
-			parking =  " Vehical was not parked";
+			parking =  "\nVehicle was not parked";
 		}else{
-			parking = " Entry to Car Park: " + parkingTime +
-					  " Exit from Car Park: " + departureTime +
-					  " Parking Time: " + (departureTime-parkingTime);
+			parking = "\nEntry to Car Park: " + parkingTime +
+					  "\nExit from Car Park: " + departureTime +
+					  "\nParking Time: " + (departureTime-parkingTime);
 		}
 		
-		if(isSatisfied){
-			satisfied = " Customer was satisfied";
+		if(isSatisfied()){
+			satisfied = "\nCustomer was satisfied";
 		}else{
-			satisfied = " Customer was not satisfied";
+			satisfied = "\nCustomer was not satisfied";
 		}
 		
-		return "Vehicle [vehID: " + vehID +
-				" Arrival Time: " + arrivalTime +
-				queing + parking + satisfied + "]";
+		if(exitTime-arrivalTime > Constants.MAXIMUM_QUEUE_TIME){
+			exceeded = "\nExceeded maximum acceptable queuing time by: " + ((exitTime-arrivalTime) - Constants.MAXIMUM_QUEUE_TIME);
+		}else{
+			exceeded = "";
+		}
+		
+		return "Vehicle vehID: " + vehID +
+				"\nArrival Time: " + arrivalTime +
+				queing + exceeded + parking + satisfied;
 		}
 
 	/**

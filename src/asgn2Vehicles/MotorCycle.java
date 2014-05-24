@@ -20,9 +20,6 @@ import asgn2Exceptions.VehicleException;
  *
  */
 public class MotorCycle extends Vehicle {
-	
-	private String vehID;
-	private int arrivalTime;
 
 	/**
 	 * MotorCycle constructor 
@@ -35,8 +32,5 @@ public class MotorCycle extends Vehicle {
 		super(vehID, arrivalTime);
 		if(arrivalTime <= 0)
 			throw new VehicleException ("Arrival time is less or equal to 0");
-		
-		this.vehID = vehID;
-		this.arrivalTime = arrivalTime;
 	}
 }
