@@ -31,7 +31,7 @@ public class CarTests {
 	private Car smallCar;
 	private final int NEGETIVE = -1;
 	private final int ZERO = 0;
-	private final int ONE = 1;
+	private final int ARRIVALTIME = 1;
 	private final int LARGE_NUMBER = 100000;
 	private final String VEHID = "C1";
 	
@@ -40,8 +40,8 @@ public class CarTests {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		car = new Car("C1", ONE, false);
-		smallCar = new Car("C2", ONE, true);
+		car = new Car("C1", ARRIVALTIME, false);
+		smallCar = new Car("C2", ARRIVALTIME, true);
 	}
 	
 	@Test(expected=Exception.class)
@@ -56,7 +56,7 @@ public class CarTests {
 	
 	@Test
 	public void ConstructorOneArrivalTime() throws VehicleException {
-		new Car(VEHID, ONE, false);
+		new Car(VEHID, ARRIVALTIME, false);
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class CarTests {
 	
 	@Test
 	public void testgetArrivalTime() throws VehicleException {
-		assertEquals(car.getArrivalTime(), ONE);
+		assertEquals(car.getArrivalTime(), ARRIVALTIME);
 	}
 	
 	/*

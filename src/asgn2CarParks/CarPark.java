@@ -156,7 +156,7 @@ public class CarPark {
 		int maxTime = Constants.MAXIMUM_QUEUE_TIME;
 		for(int i =0; i < queue.size(); i++){
 			int arrivalTime = queue.get(i).getArrivalTime();
-			if(!(queue.get(i).isQueued()) || time > Constants.CLOSING_TIME){
+			if(!(queue.get(i).isQueued()) || time > Constants.CLOSING_TIME || time < 0){
 				throw new VehicleException("Vehicle not in correct state or timing constraints violated");
 			}
 			arrivalTime = queue.get(i).getArrivalTime();
@@ -216,14 +216,14 @@ public class CarPark {
 		if(v.isParked() || v.isQueued() || v.wasParked() || v.wasQueued()){
 			throw new VehicleException("Vehicle not in correct state");
 		}
-		if(!queueFull()){
-			status += setVehicleMsg(v, "N", "Q");
-			queue.add(v);
-			v.enterQueuedState();
-		}
-		else{
+		if(queueFull()){
 			throw new SimulationException("Queue is full");
 		}
+
+		status += setVehicleMsg(v, "N", "Q");
+		queue.add(v);
+		v.enterQueuedState();
+
 	}
 	
 	
