@@ -32,6 +32,7 @@ import javax.swing.JToggleButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -246,7 +247,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		        barGraph();
 			}
 	        
-		} catch (VehicleException | SimulationException e) {
+		} catch (VehicleException | SimulationException | IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -274,9 +275,11 @@ public class GUISimulator extends JFrame implements Runnable {
 		summary.repaint();
 	}
 
-	private void logOutput() throws VehicleException, SimulationException {
+	private void logOutput() throws VehicleException, SimulationException, IOException {
 		logText.setText("");
+		Log log = new Log();
         if(valid()){
+        	log.initialEntry(cp, s);
 			for (int time=0; time<=Constants.CLOSING_TIME; time++) {
 				//queue elements exceed max waiting time
 				if (!cp.queueEmpty()) {
@@ -296,10 +299,12 @@ public class GUISimulator extends JFrame implements Runnable {
 				if (newVehiclesAllowed(time)) { 
 					cp.tryProcessNewVehicles(time,s);
 				}
-				
-				logText.append(cp.getStatus(time)); 
+				String status = cp.getStatus(time);
+				log.writer.write(status);
+				logText.append(status); 
 		
 			}
+			log.finalise(cp);
         }
 	}
 	
