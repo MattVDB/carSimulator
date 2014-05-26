@@ -165,6 +165,7 @@ public class CarPark {
 				status += setVehicleMsg(queue.get(i), "Q", "A");
 				past.add(queue.get(i));
 				exitQueue(queue.get(i), time);
+				i--;
 			}
 						
 		}
@@ -193,8 +194,8 @@ public class CarPark {
 	 * @return true if car park full, false otherwise
 	 */
 	public boolean carParkFull() {
-		int totalVehicles = numCars + numMotorCycles + numSmallCars;
-		int totalSpaces = maxCarSpaces + maxMotorCycleSpaces + maxSmallCarSpaces;
+		int totalVehicles = getNumCars() + getNumMotorCycles();
+		int totalSpaces = maxCarSpaces + maxMotorCycleSpaces;
 		if (totalVehicles >= totalSpaces){
 			return true;			
 		}
@@ -391,7 +392,8 @@ public class CarPark {
 	 * @throws VehicleException if state is incorrect, or timing constraints are violated
 	 */
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
-		
+
+		System.out.println(time);
 		for (int i = 0; i < queue.size(); i++) {
 			Vehicle v = queue.get(i);
 			if(!(v.isQueued()))

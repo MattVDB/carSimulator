@@ -98,7 +98,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setBounds(283, 12, 670, 241);
+		panel.setBounds(98, 12, 670, 241);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -211,7 +211,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		panel.add(errorMsg);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(30, 278, 1143, 614);
+		tabbedPane.setBounds(30, 278, 818, 390);
 		getContentPane().add(tabbedPane);
 		
 		JScrollPane log = new JScrollPane();
@@ -228,7 +228,6 @@ public class GUISimulator extends JFrame implements Runnable {
 		summary = new JPanel();
 		tabbedPane.addTab("Summary", null, summary, null);
 		summary.setLayout(null);
-		
 
 	}
 
@@ -258,7 +257,7 @@ public class GUISimulator extends JFrame implements Runnable {
 			TimeSeriesCollection dataset = createTimeSeriesData(); 
 			JFreeChart chart = createChart(dataset);
 			ChartPanel CP = new ChartPanel(chart);
-			CP.setBounds(0, 0, 1138, 586);
+			CP.setBounds(0, 0, 813, 362);
 			plotSeries.removeAll();
 			plotSeries.add(CP);
 			plotSeries.repaint();
@@ -269,7 +268,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		CategoryDataset datasetBar = createDataset();
 		JFreeChart bar = createChart(datasetBar);
 		ChartPanel chartPanel  = new ChartPanel(bar);
-		chartPanel.setBounds(0, 0, 1138, 586);
+		chartPanel.setBounds(0, 0, 813, 362);
 		summary.removeAll();
 		summary.add(chartPanel);
 		summary.repaint();
@@ -458,7 +457,8 @@ public class GUISimulator extends JFrame implements Runnable {
 	public static void main(String[] args) throws SimulationException, HeadlessException, VehicleException {
 		gui = new GUISimulator("Carpark");
 		gui.setVisible(true);
-		gui.setSize(1220, 950);
+		gui.setSize(900, 720);
+		gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		  
 		if(args.length != 0){
 			if(args.length == 10){
