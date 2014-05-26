@@ -393,7 +393,6 @@ public class CarPark {
 	 */
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
 
-		System.out.println(time);
 		for (int i = 0; i < queue.size(); i++) {
 			Vehicle v = queue.get(i);
 			if(!(v.isQueued()))
