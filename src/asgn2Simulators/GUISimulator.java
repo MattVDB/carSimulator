@@ -39,9 +39,13 @@ import java.util.GregorianCalendar;
 import javax.swing.JScrollPane;
 
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -76,6 +80,10 @@ public class GUISimulator extends JFrame implements Runnable {
 	private static CarPark cp;
 	private static Simulator s;
 	private JTextArea logText;
+	private JPanel plotSeries;
+	private JPanel summary;
+	private JLabel errorMsg;
+
 
 	/**
 	 * @param arg0
@@ -90,7 +98,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setBounds(10, 11, 670, 241);
+		panel.setBounds(283, 12, 670, 241);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -99,7 +107,7 @@ public class GUISimulator extends JFrame implements Runnable {
 		panel.add(lblRandomSeed);
 		
 		JLabel lblUserInputs = new JLabel("User Inputs");
-		lblUserInputs.setBounds(312, 11, 56, 14);
+		lblUserInputs.setBounds(312, 11, 65, 16);
 		panel.add(lblUserInputs);
 		
 		randomSeed = new JTextField();
@@ -195,11 +203,15 @@ public class GUISimulator extends JFrame implements Runnable {
 				run();
 			}
 		});
-		btnStartSimulation.setBounds(280, 207, 107, 23);
+		btnStartSimulation.setBounds(12, 203, 125, 26);
 		panel.add(btnStartSimulation);
 		
+		errorMsg = new JLabel("");
+		errorMsg.setBounds(155, 208, 294, 16);
+		panel.add(errorMsg);
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(30, 278, 618, 285);
+		tabbedPane.setBounds(30, 278, 1143, 614);
 		getContentPane().add(tabbedPane);
 		
 		JScrollPane log = new JScrollPane();
@@ -209,16 +221,15 @@ public class GUISimulator extends JFrame implements Runnable {
 		logText.setEditable(false);
 		log.setViewportView(logText);
 		
-		JPanel plotSeries = new JPanel();
+		plotSeries = new JPanel();
 		tabbedPane.addTab("Plot Series", null, plotSeries, null);
-		
-//		final TimeSeriesCollection dataset = createTimeSeriesData(); 
-//        JFreeChart chart = createChart(dataset);
-		
-		JPanel summary = new JPanel();
-		tabbedPane.addTab("Summary", null, summary, null);
+		plotSeries.setLayout(null);
 
-//		// TODO Auto-generated constructor stub
+		summary = new JPanel();
+		tabbedPane.addTab("Summary", null, summary, null);
+		summary.setLayout(null);
+		
+
 	}
 
 	/* (non-Javadoc)
@@ -226,18 +237,112 @@ public class GUISimulator extends JFrame implements Runnable {
 	 */
 	@Override
 	public void run() {
-		cp = new CarPark();
+		
 		try {
-			s = new Simulator();
-			logOutput();
+			if(valid()){
+				plotGraph();
+		        
+		        logOutput();
+		        
+		        barGraph();
+			}
+	        
 		} catch (VehicleException | SimulationException e) {
 			e.printStackTrace();
 		}
 		
 	}
 
+	private void plotGraph() throws SimulationException, VehicleException {
+		if(valid()){
+			TimeSeriesCollection dataset = createTimeSeriesData(); 
+			JFreeChart chart = createChart(dataset);
+			ChartPanel CP = new ChartPanel(chart);
+			CP.setBounds(0, 0, 1138, 586);
+			plotSeries.removeAll();
+			plotSeries.add(CP);
+			plotSeries.repaint();
+		}
+	}
+
+	private void barGraph() {
+		CategoryDataset datasetBar = createDataset();
+		JFreeChart bar = createChart(datasetBar);
+		ChartPanel chartPanel  = new ChartPanel(bar);
+		chartPanel.setBounds(0, 0, 1138, 586);
+		summary.removeAll();
+		summary.add(chartPanel);
+		summary.repaint();
+	}
+
 	private void logOutput() throws VehicleException, SimulationException {
+		logText.setText("");
+        if(valid()){
+			for (int time=0; time<=Constants.CLOSING_TIME; time++) {
+				//queue elements exceed max waiting time
+				if (!cp.queueEmpty()) {
+					cp.archiveQueueFailures(time);
+				}
+				//vehicles whose time has expired
+				if (!cp.carParkEmpty()) {
+					//force exit at closing time, otherwise normal
+					boolean force = (time == Constants.CLOSING_TIME);
+					cp.archiveDepartingVehicles(time, force);
+				}
+				//attempt to clear the queue 
+				if (!cp.carParkFull()) {
+					cp.processQueue(time,s);
+				}
+				// new vehicles from minute 1 until the last hour
+				if (newVehiclesAllowed(time)) { 
+					cp.tryProcessNewVehicles(time,s);
+				}
+				
+				logText.append(cp.getStatus(time)); 
+		
+			}
+        }
+	}
+	
+	
+    /**
+     * Private method creates the dataset. Lots of hack code in the 
+     * middle, but you should use the labelled code below  
+	 * @return collection of time series for the plot 
+     * @throws SimulationException 
+     * @throws VehicleException 
+	 */
+	private TimeSeriesCollection createTimeSeriesData() throws VehicleException, SimulationException {
+		TimeSeriesCollection tsc = new TimeSeriesCollection(); 
+		TimeSeries vehTotal = new TimeSeries("Total Vehicles");
+		TimeSeries parkedTotal = new TimeSeries("Parked Vehicles"); 
+		TimeSeries carsTotal = new TimeSeries("Cars");
+		TimeSeries smallCarsTotal = new TimeSeries("Small Cars");
+		TimeSeries MotorCyclesTotal = new TimeSeries("Motor Cycles");
+		TimeSeries queueTotal = new TimeSeries("Queue");
+		TimeSeries archivedTotal = new TimeSeries("Archived");
+		TimeSeries dissatisfiedTotal = new TimeSeries("Dissatisfied");
+		
+		Calendar cal = GregorianCalendar.getInstance();
+		
+		
+		Date timePoint;
+		
+		
 		for (int time=0; time<=Constants.CLOSING_TIME; time++) {
+			cal.set(2014,0,1,6,time);
+			timePoint = cal.getTime();
+			
+			int count=0;
+			int spaces=0;
+			int cars=0;
+			int smallcars=0;
+			int motorcycles=0;
+			int dissatisfied=0;
+			int archived=0;
+			int queued=0;
+			
+			
 			//queue elements exceed max waiting time
 			if (!cp.queueEmpty()) {
 				cp.archiveQueueFailures(time);
@@ -257,129 +362,81 @@ public class GUISimulator extends JFrame implements Runnable {
 				cp.tryProcessNewVehicles(time,s);
 			}
 			//Log progress 
-			logText.append(cp.getStatus(time)); 
 			String str = cp.getStatus(time);
 			String[] split = str.split("::");
-			for(String s : split){
-				String[] value = s.split(":");
-				System.out.println(value[1]);
-				System.out.println(value[3]);
-				System.out.println(value[5]);
-				System.out.println(value[7]);
-				System.out.println(value[9]);
-				System.out.println(value[11]);
-				System.out.println(value[13]);
-				System.out.println(value[15]);
-			}
+			count = Integer.parseInt(split[1].replaceAll("[\\D]", ""));
+			spaces = Integer.parseInt(split[2].replaceAll("[\\D]", ""));
+			cars = Integer.parseInt(split[3].replaceAll("[\\D]", ""));
+			smallcars = Integer.parseInt(split[4].replaceAll("[\\D]", ""));
+			motorcycles = Integer.parseInt(split[5].replaceAll("[\\D]", ""));
+			dissatisfied = Integer.parseInt(split[6].replaceAll("[\\D]", ""));
+			archived = Integer.parseInt(split[7].replaceAll("[\\D]", ""));
+			queued = Integer.parseInt(split[8].replaceAll("[\\D]", ""));
+			
+			vehTotal.add(new Minute(timePoint),count);
+			parkedTotal.add(new Minute(timePoint),spaces);
+			carsTotal.add(new Minute(timePoint),cars);
+			smallCarsTotal.add(new Minute(timePoint),smallcars);
+			MotorCyclesTotal.add(new Minute(timePoint),motorcycles);
+			dissatisfiedTotal.add(new Minute(timePoint),dissatisfied);
+			archivedTotal.add(new Minute(timePoint),archived);
+			queueTotal.add(new Minute(timePoint),queued);
 		}
+		
+		tsc.addSeries(vehTotal);
+		tsc.addSeries(parkedTotal);
+		tsc.addSeries(carsTotal);
+		tsc.addSeries(smallCarsTotal);
+		tsc.addSeries(MotorCyclesTotal);
+		tsc.addSeries(dissatisfiedTotal);
+		tsc.addSeries(archivedTotal);
+		tsc.addSeries(queueTotal);
+		return tsc; 
+
 	}
 	
 	
-    /**
-     * Private method creates the dataset. Lots of hack code in the 
-     * middle, but you should use the labelled code below  
-	 * @return collection of time series for the plot 
-     * @throws SimulationException 
-     * @throws VehicleException 
-	 */
-//	private TimeSeriesCollection createTimeSeriesData() throws VehicleException, SimulationException {
-//		TimeSeriesCollection tsc = new TimeSeriesCollection(); 
-//		TimeSeries vehTotal = new TimeSeries("Total Vehicles");
-//		TimeSeries parkedTotal = new TimeSeries("Parked Vehicles"); 
-//		TimeSeries carsTotal = new TimeSeries("Cars");
-//		TimeSeries smallCarsTotal = new TimeSeries("Small Cars");
-//		TimeSeries MotorCyclesTotal = new TimeSeries("Motor Cycles");
-//		TimeSeries queueTotal = new TimeSeries("Queue");
-//		TimeSeries archivedTotal = new TimeSeries("Archived");
-//		TimeSeries dissatisfiedTotal = new TimeSeries("Dissatisfied");
-//		
-//		Calendar cal = GregorianCalendar.getInstance();
-//		
-//		
-//		Date timePoint;
-//		
-//		
-//		for (int time=0; time<=Constants.CLOSING_TIME; time++) {
-//			cal.set(2014,0,1,6,time);
-//			timePoint = cal.getTime();
-//			
-//			int count=0;
-//			int spaces=0;
-//			int cars=0;
-//			int smallcars=0;
-//			int motorcycles=0;
-//			int dissatisfied=0;
-//			int archived=0;
-//			int queued=0;
-//			
-//			
-//			//queue elements exceed max waiting time
-//			if (!cp.queueEmpty()) {
-//				cp.archiveQueueFailures(time);
-//			}
-//			//vehicles whose time has expired
-//			if (!cp.carParkEmpty()) {
-//				//force exit at closing time, otherwise normal
-//				boolean force = (time == Constants.CLOSING_TIME);
-//				cp.archiveDepartingVehicles(time, force);
-//			}
-//			//attempt to clear the queue 
-//			if (!cp.carParkFull()) {
-//				cp.processQueue(time,s);
-//			}
-//			// new vehicles from minute 1 until the last hour
-//			if (newVehiclesAllowed(time)) { 
-//				cp.tryProcessNewVehicles(time,s);
-//			}
-//			//Log progress 
-//			String str = cp.getStatus(time);
-//			String[] split = str.split("::");
-//			for(String s : split){
-//				String[] value = s.split(":");
-//				count = Integer.parseInt(value[]);
-//				spaces = Integer.parseInt(value[3]);
-//				cars = Integer.parseInt(value[5]);
-//				smallcars = Integer.parseInt(value[7]);
-//				motorcycles = Integer.parseInt(value[9]);
-//				dissatisfied = Integer.parseInt(value[11]);
-//				archived = Integer.parseInt(value[13]);
-//				queued = Integer.parseInt(value[15]);
-//			}
-//			
-//			vehTotal.add(new Minute(timePoint),count);
-//			parkedTotal.add(new Minute(timePoint),spaces);
-//			carsTotal.add(new Minute(timePoint),cars);
-//			smallCarsTotal.add(new Minute(timePoint),smallcars);
-//			MotorCyclesTotal.add(new Minute(timePoint),motorcycles);
-//			dissatisfiedTotal.add(new Minute(timePoint),dissatisfied);
-//			archivedTotal.add(new Minute(timePoint),archived);
-//			queueTotal.add(new Minute(timePoint),queued);
-//		}
-//		
-//		tsc.addSeries(vehTotal);
-//		tsc.addSeries(parkedTotal);
-//		tsc.addSeries(carsTotal);
-//		tsc.addSeries(smallCarsTotal);
-//		tsc.addSeries(MotorCyclesTotal);
-//		tsc.addSeries(dissatisfiedTotal);
-//		tsc.addSeries(archivedTotal);
-//		tsc.addSeries(queueTotal);
-//		return tsc; 
-//		
-//		
-//
-//	}
-//	
-//    private JFreeChart createChart(final XYDataset dataset) {
-//        final JFreeChart result = ChartFactory.createTimeSeriesChart(
-//            "", "hh:mm:ss", "Vehicles", dataset, true, true, false);
-//        final XYPlot plot = result.getXYPlot();
-//        ValueAxis domain = plot.getDomainAxis();
-//        domain.setAutoRange(true);
-//        ValueAxis range = plot.getRangeAxis();
-//        range.setAutoRange(true);
-//        return result;
-//    }
+	private CategoryDataset createDataset(){
+		
+		String str = cp.getStatus(Constants.CLOSING_TIME);
+		String[] split = str.split("::");
+		int count = Integer.parseInt(split[1].replaceAll("[\\D]", ""));
+		int dissatisfied = Integer.parseInt(split[6].replaceAll("[\\D]", ""));
+		
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		dataset.addValue(count, "Total Vehicles", "");
+		dataset.addValue(dissatisfied, "Total Dissatisfied", "");
+		return dataset;
+		
+	}
+	
+	
+	private JFreeChart createChart(CategoryDataset dataset) {
+		final JFreeChart result = ChartFactory.createBarChart(
+	            "", "", "Value", dataset, PlotOrientation.VERTICAL,
+	            true, true, false
+	        );
+		return result;
+	}
+	
+    private JFreeChart createChart(XYDataset dataset) {
+        JFreeChart result = ChartFactory.createTimeSeriesChart(
+            "", "hh:mm:ss", "Vehicles", dataset, true, true, false);
+        XYPlot plot = result.getXYPlot();
+        ValueAxis domain = plot.getDomainAxis();
+        domain.setAutoRange(true);
+        ValueAxis range = plot.getRangeAxis();
+        range.setAutoRange(true);
+        plot.getRenderer().setSeriesPaint(0, Color.black);
+        plot.getRenderer().setSeriesPaint(1, Color.blue);
+        plot.getRenderer().setSeriesPaint(2, Color.cyan);
+        plot.getRenderer().setSeriesPaint(3, Color.gray);
+        plot.getRenderer().setSeriesPaint(4, Color.darkGray);
+        plot.getRenderer().setSeriesPaint(5, Color.yellow);
+        plot.getRenderer().setSeriesPaint(6, Color.green);
+        plot.getRenderer().setSeriesPaint(7, Color.red);
+        return result;
+    }
 	
 	/**
 	 * Helper method to determine if new vehicles are permitted
@@ -399,13 +456,69 @@ public class GUISimulator extends JFrame implements Runnable {
 	 * @throws HeadlessException 
 	 */
 	public static void main(String[] args) throws SimulationException, HeadlessException, VehicleException {
-
-			 
-			 cp = new CarPark();
-			 s = new Simulator();
-			 gui = new GUISimulator("Carpark");
-			 gui.setVisible(true);
+		gui = new GUISimulator("Carpark");
+		gui.setVisible(true);
+		gui.setSize(1220, 950);
 		  
+		if(args.length != 0){
+			if(args.length == 10){
+				gui.maxCars.setText(args[0]);
+				gui.maxSmallCars.setText(args[1]);
+				gui.maxMotorCycles.setText(args[2]);
+				gui.maxQueue.setText(args[3]);
+				gui.randomSeed.setText(args[4]);
+				gui.carProb.setText(args[5]);
+				gui.smallCarProb.setText(args[6]);
+				gui.motorCycleProb.setText(args[7]);
+				gui.avgStay.setText(args[8]);
+				gui.avgStaySD.setText(args[9]);
+			}else if(args.length < 10){
+				System.err.println("Not enough arguments");
+			}
+		}else{
+			gui.maxCars.setText(Integer.toString(Constants.DEFAULT_MAX_CAR_SPACES));
+			gui.maxSmallCars.setText(Integer.toString(Constants.DEFAULT_MAX_SMALL_CAR_SPACES));
+			gui.maxMotorCycles.setText(Integer.toString(Constants.DEFAULT_MAX_MOTORCYCLE_SPACES));
+			gui.maxQueue.setText(Integer.toString(Constants.DEFAULT_MAX_QUEUE_SIZE));
+			gui.randomSeed.setText(Integer.toString(Constants.DEFAULT_SEED));
+			gui.carProb.setText(Double.toString(Constants.DEFAULT_CAR_PROB));
+			gui.smallCarProb.setText(Double.toString(Constants.DEFAULT_SMALL_CAR_PROB));
+			gui.motorCycleProb.setText(Double.toString(Constants.DEFAULT_MOTORCYCLE_PROB));
+			gui.avgStay.setText(Double.toString(Constants.DEFAULT_INTENDED_STAY_MEAN));
+			gui.avgStaySD.setText(Double.toString(0.33*Constants.DEFAULT_INTENDED_STAY_MEAN));
+		}
 		
+		
+	}
+
+	private boolean valid() throws SimulationException {
+		int maxCarSpaces =Integer.parseInt(gui.maxCars.getText());
+		int maxSmallCarSpaces =Integer.parseInt(gui.maxSmallCars.getText());
+		int maxMotorCycleSpaces =Integer.parseInt(gui.maxMotorCycles.getText());
+		int maxQueueSize = Integer.parseInt(gui.maxQueue.getText());
+		int seed =Integer.parseInt(gui.randomSeed.getText());
+		double carProb =Double.parseDouble(gui.carProb.getText());
+		double smallCarProb =Double.parseDouble(gui.smallCarProb.getText());
+		double motorCycleProb =Double.parseDouble(gui.motorCycleProb.getText());
+		double avgStay =Double.parseDouble(gui.avgStay.getText());
+		double avgStaySD =Double.parseDouble(gui.avgStaySD.getText());
+		
+		if(maxCarSpaces >= 0 && maxMotorCycleSpaces >= 0 &&
+				maxQueueSize >= 0 && maxSmallCarSpaces >= 0){
+			if(maxSmallCarSpaces <= maxCarSpaces){
+				
+				cp = new CarPark(maxCarSpaces, maxSmallCarSpaces, maxMotorCycleSpaces, maxQueueSize);
+				s = new Simulator(seed, avgStay, avgStaySD, carProb, smallCarProb, motorCycleProb);
+				gui.errorMsg.setText("");
+				return true;
+				
+			}else{
+				gui.errorMsg.setText("Max Small Cars must not be larger than Max Cars.");
+				return false;
+			}
+		}else{
+			gui.errorMsg.setText("Vaules cannot be negetive.");
+			return false;
+		}
 	}
 }
