@@ -51,7 +51,7 @@ public class CarPark {
 	private int numSmallCars = 0;
 	private int numMotorCycles = 0;
 	private int count = 0;
-	private int numDissatisfied;
+	private int numDissatisfied = 0;
 	private String status = "";
 
 	
@@ -359,8 +359,8 @@ public class CarPark {
 			throw new SimulationException("No suitable space avaliabvle for parking");
 		if(v.isParked() || v.wasParked())
 			throw new VehicleException("vehicle not in the correct state");
-		if(time > Constants.CLOSING_TIME)
-			throw new VehicleException("Time past closing time");
+		if(time > Constants.CLOSING_TIME || time < 0)
+			throw new VehicleException("Timing constraints are violated");
 		if(intendedDuration < Constants.MINIMUM_STAY)
 			throw new VehicleException("Intended stay less than minimum");
 		
@@ -394,13 +394,17 @@ public class CarPark {
 		
 		for (int i = 0; i < queue.size(); i++) {
 			Vehicle v = queue.get(i);
-			if(!(v.isQueued())){
+			if(!(v.isQueued()))
 				throw new VehicleException("Vehicle not in correct state");
-			}
+			if(time > Constants.CLOSING_TIME || time < 0)
+				throw new VehicleException("Timing constraints are violated");
 			if(!(spacesAvailable(v))){
 				break;
 			}
 			else{
+				if(!spacesAvailable(v))
+					throw new SimulationException("No spaces avaliable");
+				
 				exitQueue(v, time);
 				parkVehicle(v, time, sim.setDuration());
 				status += setVehicleMsg(v, "Q", "P");
@@ -417,7 +421,7 @@ public class CarPark {
 	 */
 	public boolean queueEmpty() {
 		return queue.isEmpty();
-		}
+	}
 
 	/**
 	 * Simple status showing whether queue is full
@@ -498,13 +502,13 @@ public class CarPark {
 	 */
 	@Override
 	public String toString() {
-		return "CarPark [count: " + count 
+		return "CarPark count: " + count 
 				 + " numCars: " + numCars 
 				 + " numSmallCars: " + numSmallCars 
 				 + " numMotorCycles: " + numMotorCycles 
 				 + " queue: " + (queue.size()) 
 				 + " numDissatisfied: " + numDissatisfied 
-				 + " past: " + past.size() + "]"; 
+				 + " past: " + past.size(); 
 	}
 
 	/**
@@ -563,7 +567,7 @@ public class CarPark {
 			throw new VehicleException ("Vehicle is not parked");
 		if(v.isQueued())
 			throw new VehicleException ("Vehicle is in queue");
-		if(departureTime > Constants.CLOSING_TIME)
+		if(departureTime > Constants.CLOSING_TIME || departureTime < 0)
 			throw new VehicleException ("Violates timing constraints");
 		if(!v.isParked())
 			throw new SimulationException("Vehicle is not in car park");

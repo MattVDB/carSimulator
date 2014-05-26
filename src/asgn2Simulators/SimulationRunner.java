@@ -94,53 +94,16 @@ public class SimulationRunner {
 			System.exit(-1);
 		}
 		
-		//TODO: Implement Argument Processing 
-//		cp.userInput = true;
-//		
-//		System.out.println("Enter Max Car Spaces : ");
-//		String maxCar;		
-//	    Scanner scanIn = new Scanner(System.in);
-//	    maxCar = scanIn.nextLine();	          
-//	    System.out.println(maxCar);
-//	    Constants.maxCarSpaces = Integer.parseInt(maxCar);
-//	    
-//	    System.out.println("Enter Max Small Car Spaces : ");
-//		String maxSmallCar;		
-//	    Scanner scanIn1 = new Scanner(System.in);
-//	    maxSmallCar = scanIn1.nextLine();	           
-//	    System.out.println(maxSmallCar);
-//	    Constants.maxSmallCarSpaces = Integer.parseInt(maxSmallCar);
-//	    
-//	    System.out.println("Enter Max MotorCycle Spaces : ");
-//		String maxMCS;		
-//	    Scanner scanIn2 = new Scanner(System.in);
-//	    maxMCS = scanIn2.nextLine();	         
-//	    System.out.println(maxMCS);
-//	    Constants.maxMotorCycleSpaces = Integer.parseInt(maxMCS);
-//	    
-//	    System.out.println("Enter Max Max Queue Size : ");
-//		String maxQueue;		
-//	    Scanner scanIn3= new Scanner(System.in);
-//	    maxQueue = scanIn3.nextLine();	            
-//	    System.out.println(maxQueue);
-//	    Constants.maxQueueSize = Integer.parseInt(maxQueue);
-//	    
-//	    scanIn.close();
-//	    scanIn1.close();
-//	    scanIn2.close();
-//	    scanIn3.close();
-//	    
-//	    if(Constants.maxCarSpaces == 0 || Constants.maxSmallCarSpaces == 0 || Constants.maxMotorCycleSpaces == 0 || Constants.maxQueueSize == 0){
-//	    	cp.userInput = false;
-//	    }
-	    
-	    
-		
-		
-	    
-		//cp.tryProcessNewVehicles(1, s);
-		//System.out.println(cp.getStatus(1));
-		//Run the simulation 
+		if(args.length != 0){
+			if(args.length == 10){
+				cp = new CarPark(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+				s = new Simulator(Integer.parseInt(args[4]), Double.parseDouble(args[8]), Double.parseDouble(args[9]), 
+						Double.parseDouble(args[5]), Double.parseDouble(args[6]), Double.parseDouble(args[7]));
+			}else if(args.length < 10){
+				System.err.println("Not enough arguments");
+			}
+		}
+
 		SimulationRunner sr = new SimulationRunner(cp,s,l);
 		try {
 			sr.runSimulation();
