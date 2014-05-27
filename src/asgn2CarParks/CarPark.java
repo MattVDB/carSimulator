@@ -79,7 +79,7 @@ public class CarPark {
 		this.maxMotorCycleSpaces = maxMotorCycleSpaces;
 		this.maxQueueSize = maxQueueSize;
 
-		
+		//set up array lists
 		queue = new ArrayList<Vehicle>(maxQueueSize);
 		Cars = new ArrayList<Car>();
 		MotorCycles = new ArrayList<MotorCycle>();
@@ -98,13 +98,15 @@ public class CarPark {
 	 * @author Matthew Van Der Boor
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
-		
+		// look though all vehicles in car park
 		for (int i = 0; i < spaces.size(); i++){
 			if(force){
+				// send car to archive
 				departVehicle(spaces.get(i), time);
 				i--;
 			}
 			else if(spaces.get(i).getDepartureTime() == time){
+				// send car to archive
 				departVehicle(spaces.get(i), time);
 				i--;
 			}
@@ -144,6 +146,7 @@ public class CarPark {
 			throw new SimulationException("Vehicle is currently queued or parked");
 		}
 		else{
+			// send straight to archive and increase dissatisfied 
 			numDissatisfied++;
 			status += setVehicleMsg(v, "N", "A");
 			past.add(v);
@@ -165,6 +168,7 @@ public class CarPark {
 				throw new VehicleException("Vehicle not in correct state or timing constraints violated");
 			}
 			arrivalTime = queue.get(i).getArrivalTime();
+			// if vehicle stayed for too long send to archive
 			if ((arrivalTime + maxTime) < time) {
 				numDissatisfied++;
 				status += setVehicleMsg(queue.get(i), "Q", "A");
@@ -259,7 +263,6 @@ public class CarPark {
 	 * State dump intended for use in logging the final state of the carpark
 	 * All spaces and queue positions should be empty and so we dump the archive
 	 * @return String containing dump of final carpark state 
-	 * @author Ashley Maletz
 	 */
 	public String finalState() {
 		String str = "Vehicles Processed: count: " + 
@@ -311,7 +314,6 @@ public class CarPark {
 	 * and small car S arrive (new N) and go straight into the car park<br>
 	 * 262::276::P:91::C:84::S:14::M:7::D:48::A:176::Q:9CCCCCCCCC|C:P>A||C:Q>P||S:N>P|
 	 * @return String containing current state 
-	 * @author Ashley Maletz
 	 */
 	public String getStatus(int time) {
 		String str = time +"::"
@@ -355,7 +357,6 @@ public class CarPark {
 	/**
 	 * Simple status showing number of vehicles in the queue 
 	 * @return number of vehicles in the queue
-	 * @author Ashley Maletz
 	 */
 	public int numVehiclesInQueue() {
 		return queue.size();
@@ -384,6 +385,7 @@ public class CarPark {
 		
 			v.enterParkedState(time, intendedDuration);
 			spaces.add(v);
+			// check vehicle type
 			if(v instanceof MotorCycle){
 				MotorCycles.add((MotorCycle)v);
 			}else{
@@ -393,6 +395,7 @@ public class CarPark {
 					Cars.add((Car)v);					
 				}
 			}
+			// update variables
 			numMotorCycles = getNumMotorCycles();
 			numSmallCars = getNumSmallCars();
 			numCars = getNumCars();
@@ -418,12 +421,13 @@ public class CarPark {
 			if(time > Constants.CLOSING_TIME || time < 0)
 				throw new VehicleException("Timing constraints are violated");
 			if(!(spacesAvailable(v))){
+				// block queue if car can't park
 				break;
 			}
 			else{
 				if(!spacesAvailable(v))
 					throw new SimulationException("No spaces avaliable");
-				
+				// park car at front of queue
 				exitQueue(v, time);
 				parkVehicle(v, time, sim.setDuration());
 				status += setVehicleMsg(v, "Q", "P");
@@ -467,18 +471,17 @@ public class CarPark {
 	public boolean spacesAvailable(Vehicle v) {
 		int bikes = 0;
 		int sCars = 0;
-		
+		// determine num of motorcycles in small car spaces
 		if(numMotorCycles > maxMotorCycleSpaces){
 			bikes = numMotorCycles - maxMotorCycleSpaces;
 		}
-		
+		// determine num small cars in general car space
 		if(numSmallCars > (maxSmallCarSpaces - bikes)){
 			sCars = numSmallCars - (maxSmallCarSpaces - bikes);
 		}
 		
-		
+		// determine if space available 
 		if(v instanceof Car){
-			
 			
 			if(((Car) v).isSmall()){
 				
@@ -544,7 +547,7 @@ public class CarPark {
 	public void tryProcessNewVehicles(int time,Simulator sim) throws VehicleException, SimulationException {
 		if(time > Constants.CLOSING_TIME || time < 0)
 			throw new VehicleException("Time violate constraints");
-		
+		// try create new vehicle
 		if(sim.newCarTrial()){
 			if(sim.smallCarTrial()){
 				count++;
@@ -563,26 +566,20 @@ public class CarPark {
 			processVehicle(time, sim, mc);
 		}
 	}
-	
-	/**
-	 * Method to process the Vehicle. If space Avaliable the car is parked, else it is placed in the queue.
-	 * If the queue is full then it is archived. 
-	 * @param time int holding current simulation time
-	 * @param sim Simulation object controlling vehicle creation 
-	 * @param v Vehicle to be added 
-	 * @throws VehicleException
-	 * @throws SimulationException
-	 * @author Ashley Maletz
-	 */
+
 	private void processVehicle(int time, Simulator sim, Vehicle v)
 			throws VehicleException, SimulationException {
+		// determine what happens to car
 		if(spacesAvailable(v)){
+			// parked
 			status += setVehicleMsg(v, "N", "P");
 			parkVehicle(v, time, sim.setDuration());
 		}else if(!(queueFull())){
+			//queued
 			enterQueue(v);
 		}
 		else{
+			//archived
 			archiveNewVehicle(v);
 		}
 	}
@@ -610,6 +607,7 @@ public class CarPark {
 			v.exitParkedState(departureTime);
 			spaces.remove(v);
 			status += setVehicleMsg(v, "P", "A");
+			// determine type of vehicle
 			if(v instanceof Car){
 				if(((Car) v).isSmall()){
 					SmallCars.remove(v);
@@ -619,6 +617,7 @@ public class CarPark {
 			}else{
 				MotorCycles.remove(v);				
 			}
+			// update variables
 			numMotorCycles = getNumMotorCycles();
 			numSmallCars = getNumSmallCars();
 			numCars = getNumCars();
@@ -631,7 +630,6 @@ public class CarPark {
 	 * @param source String holding starting state of vehicle (N,Q,P,A) 
 	 * @param target String holding finishing state of vehicle (Q,P,A) 
 	 * @return String containing transition in the form: |(S|C|M):(N|Q|P|A)>(Q|P|A)| 
-	 * @author Ashley Maletz
 	 */
 	private String setVehicleMsg(Vehicle v,String source, String target) {
 		String str="";
