@@ -44,21 +44,37 @@ public class CarTests {
 		smallCar = new Car("C2", ARRIVALTIME, true);
 	}
 	
+	/**
+	 * Call the constructor with a negative arrival time.
+	 * @throws VehicleException
+	 */
 	@Test(expected=Exception.class)
 	public void ConstructorNegetiveArrivalTime() throws VehicleException {
 		new Car(VEHID, NEGETIVE, false);
 	}
 	
+	/**
+	 * Calls the constructor with an arrival time of zero.
+	 * @throws VehicleException
+	 */
 	@Test(expected=Exception.class)
 	public void ConstructorZeroArrivalTime() throws VehicleException {
 		new Car(VEHID, ZERO, false);
 	}
 	
+	/**
+	 * Calls constuctor with an arrival time of one.
+	 * @throws VehicleException
+	 */
 	@Test
 	public void ConstructorOneArrivalTime() throws VehicleException {
 		new Car(VEHID, ARRIVALTIME, false);
 	}
 	
+	/**
+	 * Calls the constructor with an ArivalTime larger than what it can handle.
+	 * @throws VehicleException
+	 */
 	@Test
 	public void ConstructorLargeArrivalTime() throws VehicleException {
 		new Car(VEHID, LARGE_NUMBER, false);
@@ -66,7 +82,8 @@ public class CarTests {
 	
 
 	/**
-	 * Test method for {@link asgn2Vehicles.Car#toString()}.
+	 * Tests that the toString method in car returns the expected 
+	 * result after a new car is created.
 	 */
 	@Test
 	public void testToString() {
@@ -79,7 +96,8 @@ public class CarTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Car#toString()}.
+	 * Tests the toString method in smallCar returns the expected 
+	 * result after a new small car is created.
 	 */
 	@Test
 	public void testToStringSmall() {
@@ -93,7 +111,7 @@ public class CarTests {
 
 
 	/**
-	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * Tests that the smallCar isSmall() method returns true.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -103,7 +121,7 @@ public class CarTests {
 	
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Car#isSmall()}.
+	 * Tests that the car isSmall() method returns false.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -111,11 +129,19 @@ public class CarTests {
 		assertFalse(car.isSmall());
 	}
 	
+	/**
+	 * Tests that the VechicleID used to create the car is returned from the car getVehID() method.
+	 * @throws VehicleException
+	 */
 	@Test
 	public void testgetVehId() throws VehicleException {
 		assertEquals(car.getVehID(), VEHID);
 	}
 	
+	/**
+	 * Tests the ArrivalTime used to create the car is returned from the car getArrivalTime() method.
+	 * @throws VehicleException
+	 */
 	@Test
 	public void testgetArrivalTime() throws VehicleException {
 		assertEquals(car.getArrivalTime(), ARRIVALTIME);

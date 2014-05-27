@@ -101,6 +101,7 @@ public abstract class Vehicle {
 	 * Queuing formally starts on arrival and ceases with a call to {@link #exitQueuedState(int) exitQueuedState}
 	 * @throws VehicleException if the vehicle is already in a queued or parked state
 	 * @author Matthew Van Der Boor
+	 * @author Ashley Maletz
 	 */
 	public void enterQueuedState() throws VehicleException {
 		if(isQueued || isParked)

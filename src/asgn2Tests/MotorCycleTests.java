@@ -40,6 +40,7 @@ public class MotorCycleTests {
 	private final int HIGH_INTENDEDSTAY = Constants.MINIMUM_STAY + 1;
 	
 	/**
+	 * Sets up a new Motorcycle.
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -47,29 +48,44 @@ public class MotorCycleTests {
 		mc = new MotorCycle(VEHID, ARRIVALTIME);
 	}
 
-	
+	/**
+	 * Tests the constructor with a negative ArrivalTime.
+	 * @throws VehicleException
+	 */
 	@Test(expected=Exception.class)
 	public void ConstructorNegetiveArrivalTime() throws VehicleException {
 		new MotorCycle(VEHID, NEGETIVE);
 	}
 	
+	/**
+	 * Tests the constructor with a zero ArrivalTime.
+	 * @throws VehicleException
+	 */
 	@Test(expected=Exception.class)
 	public void ConstructorZeroArrivalTime() throws VehicleException {
 		new MotorCycle(VEHID, ZERO);
 	}
 	
+	/**
+	 * Tests the constructor with an ArrivalTime of one.
+	 * @throws VehicleException
+	 */
 	@Test
 	public void ConstructorOneArrivalTime() throws VehicleException {
 		new MotorCycle(VEHID, ARRIVALTIME);
 	}
 	
+	/**
+	 * Tests the constructor with a large number greater than what it can accept.
+	 * @throws VehicleException
+	 */
 	@Test
 	public void ConstructorLargeArrivalTime() throws VehicleException {
 		new MotorCycle(VEHID, LARGE_NUMBER);
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests the enterParkedState() method with a Vehicle that has already been parked.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -79,7 +95,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests the enterParkedState with a motorcycle that is in the queue.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -89,7 +105,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests the enteredParkState with a negative time.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -98,7 +114,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests enteredParkState with a IntendedStay lower than acceptable.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -107,7 +123,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests the enteredParkedState with a larger parkingTime than acceptable.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -116,7 +132,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests enteredParkedState with a zero parking time.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -125,7 +141,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests the enteredParkedState method with a high intendedStay does not hit a size limit.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -134,7 +150,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests the enteredParkedState accepts appropriate args by calling the getParkingTime method
+	 * and comapring that to to arrival time used.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -144,7 +161,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests the enteredParkedState accepts appropriate args and that getDepaturetime() returns
+	 * the ArrivalTime + IntendedStay.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -154,7 +172,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
+	 * Tests the enteredParkedState accepts appropriate args, the motorcycle is parked and 
+	 * the isParked method returns true.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -164,7 +183,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterQueuedState()}.
+	 * Test the enteredQueuedState throws an exception when a vehicle is parkeded an
+	 * no longer in the queue.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -174,7 +194,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterQueuedState()}.
+	 * Tests enteredQueuedState throws an exception when enteredQueuedState is called when 
+	 * the vehicle is already queued.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -184,7 +205,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#enterQueuedState()}.
+	 * Tests EnteredQueuedState enters the motorcycle into the queue.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -194,7 +215,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState(int)}.
+	 * Tests exitParkedState throws and exception when the vehicle is not in the correct
+	 * state.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -203,7 +225,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState(int)}.
+	 * Tests exitParkedState throws an exception when the motorcycle is not in the correct state.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -213,7 +235,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState(int)}.
+	 * Tests exitParkedState can accept a motorcycle that has just been created.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -223,7 +245,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState(int)}.
+	 * Tests exitParkedState throws an exception when an earlier exitTime is used.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -233,7 +255,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState(int)}.
+	 * Tests exitParkedState accepts and uses the DepartureTime arg.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -244,7 +266,7 @@ public class MotorCycleTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState()}.
+	 * Tests exitParkedState takes the parked motorcycle out of the carpark and archives it.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -255,7 +277,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitParkedState()}.
+	 * Tests exitParkedState takes the parked motorcycle out of the carparck and archives it.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -266,7 +288,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
+	 * Tests exitQueuedSate throws and exception when it is used on a parked motorcycle.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -276,7 +298,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
+	 * Tests exitQueuedState throws an exception when the motorcycle is not in the queue.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -285,7 +307,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
+	 * Tests exitQueuedSate throws an exception when the same ArrivalTime is used.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -295,7 +317,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
+	 * Test exitQueuedState throws an exception when an earlier exit time than arrivalTime 
+	 * is used.
 	 * @throws VehicleException 
 	 */
 	@Test(expected=Exception.class)
@@ -305,7 +328,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
+	 * Tests exitQueuedState takes the motorcycle from the queue.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -316,7 +339,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#exitQueuedState(int)}.
+	 * Tests exitQueuedState removes the motorcycle from the queue  
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -327,7 +350,8 @@ public class MotorCycleTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#getArrivalTime()}.
+	 * Tests the motorcycles ArrivalTime is equal to the arrival time 
+	 * that was used to create it.
 	 */
 	@Test
 	public void testGetArrivalTime() {
@@ -335,7 +359,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#getVehID()}.
+	 * Tests the motorcycles VehID is the same to the one used
+	 * to create it.
 	 */
 	@Test
 	public void testGetVehID() {
@@ -344,7 +369,8 @@ public class MotorCycleTests {
 
 
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	 * Test that when a motorcycle enters the parked state, the customer
+	 * is satisfied.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -354,7 +380,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	 * Tests that when a motorcycle is parked and then exits, the customer
+	 * is satisfied.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -365,7 +392,8 @@ public class MotorCycleTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	 * Tests that when the motorcycle is in the queue, then leaves to be parked, 
+	 * the customer is satisfied.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -377,7 +405,8 @@ public class MotorCycleTests {
 	}
 		
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	 * Tests that when the motorcycle is in the queue, gets parked, then leaves, the
+	 * customer is satisfied. 
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -390,7 +419,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	 * Tests the customer is not satisfied when the motorcycle has just been
+	 * created. 
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -399,7 +429,7 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	 * Tests the customers is not satisfied when it is in the queue.
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -409,7 +439,8 @@ public class MotorCycleTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#isSatisfied()}.
+	 * Tests the customer is not satisfied when the motorcycle has been in the queue
+	 * and exited the queue and never parked. 
 	 * @throws VehicleException 
 	 */
 	@Test
@@ -421,7 +452,8 @@ public class MotorCycleTests {
 
 
 	/**
-	 * Test method for {@link asgn2Vehicles.Vehicle#toString()}.
+	 * Tests the motorcycle toString() method returns the expected
+	 * output when a motorcycle is created.
 	 */
 	@Test
 	public void testToString() {

@@ -71,6 +71,7 @@ public class CarPark {
 	 * 						 restricted to small cars
 	 * @param maxMotorCycleSpaces maximum number of spaces allocated to MotorCycles
 	 * @param maxQueueSize maximum number of vehicles allowed to queue
+	 * @author Ashley Maletz
 	 */
 	public CarPark(int maxCarSpaces,int maxSmallCarSpaces, int maxMotorCycleSpaces, int maxQueueSize) {
 		this.maxCarSpaces = maxCarSpaces;
@@ -117,6 +118,7 @@ public class CarPark {
 	 * @param time int holding time at which the vehicle leaves
 	 * @throws VehicleException if vehicle to be archived is not in the correct state
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
+	 * @author Ashley Maletz
 	 */
 	private void departVehicle(Vehicle v, int time) throws VehicleException, SimulationException{
 		if(!(v.isParked())){
@@ -178,6 +180,7 @@ public class CarPark {
 	/**
 	 * Simple status showing whether carPark is empty
 	 * @return true if car park empty, false otherwise
+	 * @author Ashley Maletz
 	 */
 	public boolean carParkEmpty() {
 		int cars = this.getNumCars();
@@ -195,6 +198,7 @@ public class CarPark {
 	/**
 	 * Simple status showing whether carPark is full
 	 * @return true if car park full, false otherwise
+	 * @author Ashley Maletz
 	 */
 	public boolean carParkFull() {
 		int totalVehicles = getNumCars() + getNumMotorCycles();
@@ -215,6 +219,7 @@ public class CarPark {
 	 * @param v Vehicle to be added 
 	 * @throws SimulationException if queue is full  
 	 * @throws VehicleException if vehicle not in the correct state 
+	 * @author Ashley Maletz
 	 */
 	public void enterQueue(Vehicle v) throws SimulationException, VehicleException {
 		if(v.isParked() || v.isQueued() || v.wasParked() || v.wasQueued()){
@@ -239,6 +244,7 @@ public class CarPark {
 	 * @throws SimulationException if vehicle is not in queue 
 	 * @throws VehicleException if the vehicle is in an incorrect state or timing 
 	 * constraints are violated
+	 * @author Ashley Maletz
 	 */
 	public void exitQueue(Vehicle v,int exitTime) throws SimulationException, VehicleException {
 		if(!v.isQueued())
@@ -253,6 +259,7 @@ public class CarPark {
 	 * State dump intended for use in logging the final state of the carpark
 	 * All spaces and queue positions should be empty and so we dump the archive
 	 * @return String containing dump of final carpark state 
+	 * @author Ashley Maletz
 	 */
 	public String finalState() {
 		String str = "Vehicles Processed: count: " + 
@@ -267,6 +274,7 @@ public class CarPark {
 	/**
 	 * Simple getter for number of cars in the car park 
 	 * @return number of cars in car park, including small cars
+	 * @author Ashley Maletz
 	 */
 	public int getNumCars() {
 		return (Cars.size() + SmallCars.size());
@@ -276,6 +284,7 @@ public class CarPark {
 	 * Simple getter for number of motorcycles in the car park 
 	 * @return number of MotorCycles in car park, including those occupying 
 	 * 			a small car space
+	 * @author Ashley Maletz
 	 */
 	public int getNumMotorCycles() {
 		return MotorCycles.size();
@@ -285,6 +294,7 @@ public class CarPark {
 	 * Simple getter for number of small cars in the car park 
 	 * @return number of small cars in car park, including those 
 	 * 		   not occupying a small car space. 
+	 * @author Ashley Maletz
 	 */
 	public int getNumSmallCars() {
 		return SmallCars.size();
@@ -301,6 +311,7 @@ public class CarPark {
 	 * and small car S arrive (new N) and go straight into the car park<br>
 	 * 262::276::P:91::C:84::S:14::M:7::D:48::A:176::Q:9CCCCCCCCC|C:P>A||C:Q>P||S:N>P|
 	 * @return String containing current state 
+	 * @author Ashley Maletz
 	 */
 	public String getStatus(int time) {
 		String str = time +"::"
@@ -332,6 +343,7 @@ public class CarPark {
 	 * State dump intended for use in logging the initial state of the carpark.
 	 * Mainly concerned with parameters. 
 	 * @return String containing dump of initial carpark state 
+	 * @author Ashley Maletz
 	 */
 	public String initialState() {
 		return "CarPark [maxCarSpaces: " + this.maxCarSpaces
@@ -343,6 +355,7 @@ public class CarPark {
 	/**
 	 * Simple status showing number of vehicles in the queue 
 	 * @return number of vehicles in the queue
+	 * @author Ashley Maletz
 	 */
 	public int numVehiclesInQueue() {
 		return queue.size();
@@ -357,6 +370,7 @@ public class CarPark {
 	 * @param intendedDuration int holding intended duration of stay 
 	 * @throws SimulationException if no suitable spaces are available for parking 
 	 * @throws VehicleException if vehicle not in the correct state or timing constraints are violated
+	 * @author Ashley Maletz
 	 */
 	public void parkVehicle(Vehicle v, int time, int intendedDuration) throws SimulationException, VehicleException {
 		if(!spacesAvailable(v))
@@ -423,6 +437,7 @@ public class CarPark {
 	/**
 	 * Simple status showing whether queue is empty
 	 * @return true if queue empty, false otherwise
+	 * @author Ashley Maletz
 	 */
 	public boolean queueEmpty() {
 		return queue.isEmpty();
@@ -431,6 +446,7 @@ public class CarPark {
 	/**
 	 * Simple status showing whether queue is full
 	 * @return true if queue full, false otherwise
+	 * @author Ashley Maletz
 	 */
 	public boolean queueFull() {
 		if(queue.size() >= maxQueueSize){
@@ -523,6 +539,7 @@ public class CarPark {
 	 * @param sim Simulation object controlling vehicle creation 
 	 * @throws SimulationException if no suitable spaces available when operation attempted 
 	 * @throws VehicleException if vehicle creation violates constraints 
+	 * @author Ashley Maletz
 	 */
 	public void tryProcessNewVehicles(int time,Simulator sim) throws VehicleException, SimulationException {
 		if(time > Constants.CLOSING_TIME || time < 0)
@@ -546,7 +563,17 @@ public class CarPark {
 			processVehicle(time, sim, mc);
 		}
 	}
-
+	
+	/**
+	 * Method to process the Vehicle. If space Avaliable the car is parked, else it is placed in the queue.
+	 * If the queue is full then it is archived. 
+	 * @param time int holding current simulation time
+	 * @param sim Simulation object controlling vehicle creation 
+	 * @param v Vehicle to be added 
+	 * @throws VehicleException
+	 * @throws SimulationException
+	 * @author Ashley Maletz
+	 */
 	private void processVehicle(int time, Simulator sim, Vehicle v)
 			throws VehicleException, SimulationException {
 		if(spacesAvailable(v)){
@@ -567,6 +594,7 @@ public class CarPark {
 	 * @param v Vehicle to be removed from the car park 
 	 * @throws VehicleException if Vehicle is not parked, is in a queue, or violates timing constraints 
 	 * @throws SimulationException if vehicle is not in car park
+	 * @author Ashley Maletz
 	 */
 	public void unparkVehicle(Vehicle v,int departureTime) throws VehicleException, SimulationException {
 		if(!v.isParked())
@@ -603,6 +631,7 @@ public class CarPark {
 	 * @param source String holding starting state of vehicle (N,Q,P,A) 
 	 * @param target String holding finishing state of vehicle (Q,P,A) 
 	 * @return String containing transition in the form: |(S|C|M):(N|Q|P|A)>(Q|P|A)| 
+	 * @author Ashley Maletz
 	 */
 	private String setVehicleMsg(Vehicle v,String source, String target) {
 		String str="";

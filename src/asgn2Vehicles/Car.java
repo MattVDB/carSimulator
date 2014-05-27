@@ -32,6 +32,7 @@ public class Car extends Vehicle {
 	 * @param small - indicator whether car is regarded as small or not
 	 * @throws VehicleException if arrivalTime is <= 0  
 	 * @author Matthew Van Der Boor
+	 * @author Ashley Maletz
 	 */
 	public Car(String vehID, int arrivalTime, boolean small) throws VehicleException {
 		super(vehID, arrivalTime);
