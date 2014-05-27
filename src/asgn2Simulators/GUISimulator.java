@@ -242,6 +242,7 @@ public class GUISimulator extends JFrame implements Runnable {
 
 	private void plotGraph() throws SimulationException, VehicleException {
 		if(valid()){
+			// create new time series graph
 			TimeSeriesCollection dataset = createTimeSeriesData(); 
 			JFreeChart chart = createChart(dataset);
 			ChartPanel CP = new ChartPanel(chart);
@@ -253,6 +254,7 @@ public class GUISimulator extends JFrame implements Runnable {
 	}
 
 	private void barGraph() {
+		// create new bar graph
 		CategoryDataset datasetBar = createDataset();
 		JFreeChart bar = createChart(datasetBar);
 		ChartPanel chartPanel  = new ChartPanel(bar);
@@ -263,8 +265,10 @@ public class GUISimulator extends JFrame implements Runnable {
 	}
 
 	private void logOutput() throws VehicleException, SimulationException, IOException {
+		// reset text area
 		logText.setText("");
 		Log log = new Log();
+		// update log
         if(valid()){
         	log.initialEntry(cp, s);
 			for (int time=0; time<=Constants.CLOSING_TIME; time++) {
@@ -498,17 +502,19 @@ public class GUISimulator extends JFrame implements Runnable {
 		if(maxCarSpaces >= 0 && maxMotorCycleSpaces >= 0 &&
 				maxQueueSize >= 0 && maxSmallCarSpaces >= 0){
 			if(maxSmallCarSpaces <= maxCarSpaces){
-				
+				// set up carpark and simulator with users fields 
 				cp = new CarPark(maxCarSpaces, maxSmallCarSpaces, maxMotorCycleSpaces, maxQueueSize);
 				s = new Simulator(seed, avgStay, avgStaySD, carProb, smallCarProb, motorCycleProb);
 				gui.errorMsg.setText("");
 				return true;
 				
 			}else{
+				//display error message
 				gui.errorMsg.setText("Max Small Cars must not be larger than Max Cars.");
 				return false;
 			}
 		}else{
+			//display error message
 			gui.errorMsg.setText("Vaules cannot be negetive.");
 			return false;
 		}
