@@ -68,6 +68,7 @@ public class CarParkTests {
 	}
 
 	/**
+	 * Sets up a new Car Park, Car, Small Car, Motorcycle and Simulator.
 	 * @throws java.lang.Exception
 	 */
 	@Before
@@ -81,7 +82,8 @@ public class CarParkTests {
 
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests a car when a car is parked, then removed, its current state is no 
+	 * longer parked.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -93,7 +95,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that when a car is parked, and forcibly removed, its state is
+	 * no longer parked. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -105,7 +108,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that archiveDepartingVehicle() throws an exception when the car is not in the 
+	 * parked state.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -117,7 +121,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests archiveDepartingVehicles() throws an exception when the car is not in the parked state 
+	 * and is forcibly removed. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -130,7 +135,7 @@ public class CarParkTests {
 	
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that when a parked vehicle is archived, its state is no longer parked. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -142,7 +147,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that when a parked vehicle is forcibly archived, its state is no longer parked.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -154,7 +159,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that archivedepartingVehicle throws an exception when a previously parcked small
+	 * car is removed, then archivedepartingVehicle is called. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -166,7 +172,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that archiveDepartingVehicles throws an exception when it tries to forcibly remove a small 
+	 * car that has already left the carpark.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -179,7 +186,7 @@ public class CarParkTests {
 	
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that when a motorcycle is parked and then archived, its state is not parked.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -191,7 +198,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that when a motorcycle is parked then focibly removed, its state is no longer parked. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -203,7 +210,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests motorcycle can be parked, exit parked state and then archived. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -215,7 +222,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests a motorcycle can be parked, exit parked state and then be forcibly removed. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -227,7 +234,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that when a car, small car and motorcycle are be parked then all of them be removed
+	 * by the archiveDepartingVehicle() method, the vehicles states are not parked. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -243,7 +251,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that when a car, small car and motorcycle are parked then forcibly removed by the 
+	 * archiveDepartingVehicles() method, the vehicles states are not parked. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -259,7 +268,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests archiveDepartingVehicles() throws an exception when it tries to remove vehicles that 
+	 * have already left.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -275,7 +285,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests archiveDepartingVehicles throws an exception when it tries to focibly remove vehicles that have
+	 * already left.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -291,7 +302,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveDepartingVehicles(int, boolean)}.
+	 * Tests that when archiveDepatingVehicles() removes all the vehicles from the car park,
+	 * their states are not parked. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -308,7 +320,7 @@ public class CarParkTests {
 
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Tests archiveNewVehicle throws an exception when the car is in the queued state.
 	 * @throws SimulationException 
 	 * @throws VehicleException 
 	 */
@@ -319,7 +331,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Tests archiveNewVehicle throws an exception when the small car is in the queued state.
 	 * @throws SimulationException 
 	 * @throws VehicleException 
 	 */
@@ -330,7 +342,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Tests archiveNewVehicle throws an exception when the motorcycle is in the queued state.
 	 * @throws SimulationException 
 	 * @throws VehicleException 
 	 */
@@ -341,7 +353,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Tests archiveNewVehicle throws an exception when the car is in the parked state.
 	 * @throws SimulationException 
 	 * @throws VehicleException 
 	 */
@@ -352,7 +364,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Tests archiveNewVehicle throws an exception when the small car is in the parked state.
 	 * @throws SimulationException 
 	 * @throws VehicleException 
 	 */
@@ -363,7 +375,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Tests archiveNewVehicle throws an exception when the motorcycle is in the parked state.
 	 * @throws SimulationException 
 	 * @throws VehicleException 
 	 */
@@ -374,7 +386,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Test that when a car is archived it is not parked or queued.
 	 * @throws SimulationException 
 	 */
 	@Test
@@ -385,7 +397,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Test that when a small car is archived it is not parked or queued.
 	 * @throws SimulationException 
 	 */
 	@Test
@@ -396,7 +408,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveNewVehicle(asgn2Vehicles.Vehicle)}.
+	 * Test that when a motorcycle is archived it is not parked or queued.
 	 * @throws SimulationException 
 	 */
 	@Test
@@ -407,7 +419,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Test archiveQueueFailures throws an exception when it tries to archive a car when the 
+	 * time is after the closing time.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -418,7 +431,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Test archiveQueueFailures throws an exception when it tries to archive a small car when the 
+	 * time is after the closing time.	 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -429,7 +443,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Test archiveQueueFailures throws an exception when it tries to archive a motorcycle when the 
+	 * time is after the closing time.	
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -442,7 +457,7 @@ public class CarParkTests {
 	
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures accepts a car that is in the queue when its closing time.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -453,7 +468,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures accepts a small car that is in the queue when its closing time.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -464,7 +479,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures accepts a motorcycle that is in the queue when its closing time.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -475,7 +490,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures throw an exception when it tries to archive a car and
+	 *  the time is negative.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -486,7 +502,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures throw an exception when it tries to archive a small car and
+	 * the time is negative.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -497,7 +514,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures throw an exception when it tries to archive a motorcycle and
+	 * the time is negative.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -508,7 +526,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures accepts a car when the time is at the start.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -519,7 +537,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures accepts a small car when the time is at the start.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -530,7 +548,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures accepts a motorcycle when the time is at the start.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -541,7 +559,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures throws an exception when the car is not queued.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -553,7 +571,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures throws an exception when the small car is not queued.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -565,7 +583,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Tests archiveQueueFailures throws an exception when the motorcycle is not queued.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -577,7 +595,7 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Test that when a queued car is archived as a failure its state is not queued.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -589,7 +607,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Test that when a queued small car is archived as a failure its state is not queued.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -601,7 +619,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#archiveQueueFailures(int)}.
+	 * Test that when a queued motorcycle is archived as a failure its state is not queued.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -613,7 +631,7 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#carParkEmpty()}.
+	 * Tests the car park is empty.
 	 */
 	@Test
 	public void testCarParkEmptyTrue() {
@@ -621,7 +639,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#carParkEmpty()}.
+	 * Test that when a car is parked, the car park is no longer empty.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -632,7 +650,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#carParkEmpty()}.
+	 * Test that when a small car is parked, the car park is no longer empty.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -643,7 +661,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#carParkEmpty()}.
+	 * Test that when a motorcycle is parked, the car park is no longer empty.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -655,7 +673,7 @@ public class CarParkTests {
 	
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#carParkFull()}.
+	 * Tests the car park is not full.
 	 */
 	@Test
 	public void testCarParkFullFalse() {
@@ -663,7 +681,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#carParkFull()}.
+	 * Tests that when the car park is full, carparkFull() returns true.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -676,7 +694,7 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#enterQueue(asgn2Vehicles.Vehicle)}.
+	 * Tests enterQueue() throws an exception when the car is parked. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -687,7 +705,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#enterQueue(asgn2Vehicles.Vehicle)}.
+	 * Tests enterQueue() throws an exception when the car is already queued. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -698,7 +716,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#enterQueue(asgn2Vehicles.Vehicle)}.
+	 * Tests enterQueue() throws an exception when the car has been parked and then removed from
+	 * the car park.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -710,7 +729,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#enterQueue(asgn2Vehicles.Vehicle)}.
+	 * Tests enterQueue() throws an exception when the car has been in the queue and then removed 
+	 * from the queue.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -722,7 +742,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#enterQueue(asgn2Vehicles.Vehicle)}.
+	 * Tests enterQueue() throws an exception when the car tries to enter an already
+	 * full queue.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -737,7 +758,7 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#exitQueue(asgn2Vehicles.Vehicle, int)}.
+	 * Tests that when a car enteres the queue and then is removed, it is not in the queued state.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -749,7 +770,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#exitQueue(asgn2Vehicles.Vehicle, int)}.
+	 * Tests exitQueue throws an exception when the car is not queued.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -759,7 +780,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#exitQueue(asgn2Vehicles.Vehicle, int)}.
+	 * Tests exitQueue throws an exception when it tries to exit a car from the queue after closing time.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -770,7 +791,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#exitQueue(asgn2Vehicles.Vehicle, int)}.
+	 * Tests a car can exit the queue at closing time.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -781,7 +802,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#exitQueue(asgn2Vehicles.Vehicle, int)}.
+	 * Tests exitQueue throws an exception when the exitTime is negative.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -792,7 +813,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#exitQueue(asgn2Vehicles.Vehicle, int)}.
+	 * Tests exitQueue throws an exception when it tries to remove a car at the starting time.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -804,7 +825,7 @@ public class CarParkTests {
 
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#getNumCars()}.
+	 * Tests getNumCars returns the correct amount when there is 1 car in the carpark. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -815,7 +836,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#getNumCars()}.
+	 * Tests getNumCars returns the correct amount when there are 2 cars in the carpark.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -827,7 +848,7 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#getNumCars()}.
+	 * Tests GetNumCars returns the correct amount when 2 cars enter and one car leaves.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -840,7 +861,7 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#getNumMotorCycles()}.
+	 * Test genNumMotorcycles returns the correct amount when there is 1 motorcycle.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -851,7 +872,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#getNumMotorCycles()}.
+	 * Test genNumMotorcycles returns the correct amount when a motorcycle enters the carpark
+	 * and then is removed. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -863,7 +885,7 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#getNumSmallCars()}.
+	 * Tests getNumSmallCars returns the correct amount when there is one small car.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -874,7 +896,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#getNumSmallCars()}.
+	 * Tests getNumSmallCars returns the correct amount when a small car and a car enter
+	 * the car park. 
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -886,7 +909,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#getNumSmallCars()}.
+	 * Test getNumSmallCars returns the correct amount when a small car enters the carpark and
+	 * then leaves the carpark.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -899,7 +923,7 @@ public class CarParkTests {
 
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#numVehiclesInQueue()}.
+	 * Tests getNumVehiclsInQueue returns the correct amount when 1 car enters the queue.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -910,7 +934,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#numVehiclesInQueue()}.
+	 * Tests numVehiclesInQueue reruns the correct amount when a car, small car and a 
+	 * motorcycle is added to the queue.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -923,7 +948,8 @@ public class CarParkTests {
 	}
 	
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#numVehiclesInQueue()}.
+	 * Tests numVehiclesInQueue returns the correct amount of vehicles in the queue when there
+	 * are none.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -933,7 +959,8 @@ public class CarParkTests {
 	}
 
 	/**
-	 * Test method for {@link asgn2CarParks.CarPark#parkVehicle(asgn2Vehicles.Vehicle, int, int)}.
+	 * Tests that getNumCars and getNumSmallCars return the correct amount when a small car is 
+	 * entered into the car park.
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
@@ -1079,7 +1106,7 @@ public class CarParkTests {
 	 * @throws VehicleException 
 	 * @throws SimulationException 
 	 */
-	@Test
+	@Test(expected=Exception.class)
 	public void testParkVehicleAtStart() throws SimulationException, VehicleException {
 		cp.parkVehicle(c, START, INTENDEDSTAY);
 	}
