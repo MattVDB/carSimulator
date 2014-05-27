@@ -16,20 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JMenu;
 import javax.swing.JButton;
-import javax.swing.JInternalFrame;
-import javax.swing.JDesktopPane;
 import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
-import java.awt.Choice;
-import java.awt.EventQueue;
-
-import javax.swing.JToggleButton;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -51,14 +42,10 @@ import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.RefineryUtilities;
-
 import asgn2CarParks.CarPark;
-import asgn2Examples.DTSCTest;
 import asgn2Exceptions.SimulationException;
 import asgn2Exceptions.VehicleException;
 
-import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 
 /**

@@ -94,6 +94,7 @@ public class CarPark {
 	 * @param force boolean forcing departure to clear car park 
 	 * @throws VehicleException if vehicle to be archived is not in the correct state 
 	 * @throws SimulationException if one or more departing vehicles are not in the car park when operation applied
+	 * @author Matthew Van Der Boor
 	 */
 	public void archiveDepartingVehicles(int time,boolean force) throws VehicleException, SimulationException {
 		
@@ -134,6 +135,7 @@ public class CarPark {
 	 * away
 	 * @param v Vehicle to be archived
 	 * @throws SimulationException if vehicle is currently queued or parked
+	 * @author Matthew Van Der Boor
 	 */
 	public void archiveNewVehicle(Vehicle v) throws SimulationException {
 		if(v.isParked() || v.isQueued()){
@@ -151,6 +153,7 @@ public class CarPark {
 	 * @param time int holding current simulation time 
 	 * @throws VehicleException if one or more vehicles not in the correct state or if timing constraints are violated
 	 * @throws SimulationException 
+	 * @author Matthew Van Der Boor
 	 */
 	public void archiveQueueFailures(int time) throws VehicleException, SimulationException {
 		int maxTime = Constants.MAXIMUM_QUEUE_TIME;
@@ -390,6 +393,7 @@ public class CarPark {
 	 * @param time int holding current simulation time 
 	 * @throws SimulationException if no suitable spaces available when parking attempted
 	 * @throws VehicleException if state is incorrect, or timing constraints are violated
+	 * @author Matthew Van Der Boor
 	 */
 	public void processQueue(int time, Simulator sim) throws VehicleException, SimulationException {
 
@@ -441,7 +445,8 @@ public class CarPark {
 	 * Method determines, given a vehicle of a particular type, whether there are spaces available for that 
 	 * type in the car park under the parking policy in the class header.  
 	 * @param v Vehicle to be stored. 
-	 * @return true if space available for v, false otherwise 
+	 * @return true if space available for v, false otherwise
+	 * @author Matthew Van Der Boor 
 	 */
 	public boolean spacesAvailable(Vehicle v) {
 		int bikes = 0;

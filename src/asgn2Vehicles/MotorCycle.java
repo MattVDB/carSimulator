@@ -27,6 +27,7 @@ public class MotorCycle extends Vehicle {
 	 * @param arrivalTime - time (minutes) at which the vehicle arrives and is 
 	 *        either queued or given entry to the carpark 
 	 * @throws VehicleException if arrivalTime is <= 0  
+	 * @author Matthew Van Der Boor
 	 */
 	public MotorCycle(String vehID, int arrivalTime) throws VehicleException {
 		super(vehID, arrivalTime);

@@ -22,7 +22,7 @@ import asgn2Vehicles.Car;
 import asgn2Vehicles.Vehicle;
 
 /**
- * @author hogan
+ * @author Matthew Van Der Boor
  *
  */
 public class CarTests {

@@ -27,7 +27,7 @@ import asgn2Vehicles.MotorCycle;
 import asgn2Vehicles.Vehicle;
 
 /**
- * @author hogan
+ * @author Matthew Van Der Boor
  *
  */
 public class CarParkTests {

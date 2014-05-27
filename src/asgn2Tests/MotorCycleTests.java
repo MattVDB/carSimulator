@@ -23,7 +23,7 @@ import asgn2Vehicles.MotorCycle;
 import asgn2Vehicles.Vehicle;
 
 /**
- * @author hogan
+ * @author Matthew Van Der Boor
  *
  */
 public class MotorCycleTests {
@@ -119,7 +119,7 @@ public class MotorCycleTests {
 	 * Test method for {@link asgn2Vehicles.Vehicle#enterParkedState(int, int)}.
 	 * @throws VehicleException 
 	 */
-	@Test
+	@Test(expected=Exception.class)
 	public void testEnterParkedStateZeroParkingTime() throws VehicleException {
 		mc.enterParkedState(ZERO, INTENDEDSTAY);
 	}

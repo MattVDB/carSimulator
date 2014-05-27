@@ -10,10 +10,7 @@
  */
 package asgn2Simulators;
 
-import java.io.Console;
 import java.io.IOException;
-import java.util.Scanner;
-
 import asgn2CarParks.CarPark;
 import asgn2Exceptions.SimulationException;
 import asgn2Exceptions.VehicleException;
